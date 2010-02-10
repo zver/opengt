@@ -8,3 +8,9 @@ def index(request):
 
 def map(request):
 	return render_to_response('agp/map.html', RequestContext(request))
+
+def login(request):
+	return render_to_response('agp/login.html', RequestContext(request))
+
+def registration(request):
+	return render_to_response('agp/registration.html', RequestContext(request))

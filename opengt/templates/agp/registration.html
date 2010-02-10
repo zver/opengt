@@ -1,0 +1,102 @@
+{% extends "agp/base.html" %}
+{% block script %}
+<style>
+    .standard_form {
+        margin: 3em auto 0 auto;
+        width: 300px;
+    }
+    
+    .standard_form td {
+        padding: 0 2em 1em 2em;
+    }
+    
+    .standard_form h1 {
+        font-size: 160%;
+        margin-bottom: 1em;
+    }
+    
+    .standard_form h1 a {
+        font-size: 70%;
+        font-weight: normal;
+    }
+    
+    .standard_form form label, .standard_form form .label, label.standard {
+        font-size: 110%;
+        color: #666;
+        display: block;
+        margin: 0;
+        margin-top: 1em;
+    }
+    
+    .standard_form form label a {
+        font-size: 90%;
+    }
+    
+    .standard_form form label.error {
+        color: #a00;
+    }
+    
+    .standard_form form .label label {
+        margin: 0;
+        color: black;
+        font-size: 95%;
+    }
+    
+    .standard_form form .label span {
+        font-size: 90%;
+        color: #888;
+    }
+    
+    .standard_form form input.text, .standard_form form textarea {
+        padding: 5px;
+        border: 1px solid #888;
+    }
+    
+    .standard_form form input.text {
+        font-size: 110%;
+    }
+    
+    .standard_form form input.submit {
+        font-size: 120%;
+        padding: .1em 1em;
+    }
+    
+    .standard_form form label.error input.text, .standard_form form label.error textarea {
+        border: 1px solid #a00;
+        background-color: #f2e1e1;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div id="map" style="width:773px; height:523px; float:left; margin-right:10px">
+    <table class="standard_form" id="login" cellspacing="0" cellpadding="5" border="5">
+        <tr>
+            <td>
+                <form action="/users" id="signup_form" method="post">
+                    <div style="margin: 0pt; padding: 0pt;">
+                        <input name="authenticity_token" value="dc64db540b33d219d07b182ad4bfc8014731c0eb" type="hidden">
+                    </div>
+					<h1>Регистрация <a href="/login">(авторизация)</a></h1>
+                    <label for="user_email" class="">
+                        Адрес почты
+                        <br>
+                        <input class="text" id="user_email" name="user[email]" size="30" style="width: 300px;" value="" type="text">
+                    </label>
+                    <label for="password">
+                        Введите пароль
+                        <br>
+                        <input class="text" id="user_password" name="user[password]" size="30" style="width: 300px;" value="" type="password">
+                    </label>
+                    <label for="password_confirmation">
+                        ..еще раз
+                        <br/>
+                        <input type="password" value="" style="width: 300px;" size="30" name="user[password_confirmation]" id="user_password_confirmation" class="text"/>
+                    </label>
+					<label>
+						<input value="зарегистрировать" id="signup_button" type="submit">
+					</label>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div> {% endblock %}
