@@ -8,4 +8,6 @@ urlpatterns = patterns('',
 	url(r'^map/$', map, name="map"),
 	url(r'^login/$', login, name="login"),
 	url(r'^registration/$', registration, name="registration"),
+	url(r'^trackers/$', trackers, name="trackers"),
+
 )
