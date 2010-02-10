@@ -1,6 +1,9 @@
-{% extends "base.html" %}
+{% extends "agp/base.html" %}
+{% block script %}
+	<script type='text/javascript' src="http://www.openlayers.org/api/OpenLayers.js"></script>
+	<script type='text/javascript' src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+	<script src="{{ MEDIA_URL }}js/tyumen.js"></script>	
+{% endblock %}
 {% block map %}
-
-<div id=map>map</div>
-
+	<div id="map" style="width:773px; height:523px; float:left; border:solid 1px black; margin-right:10px"></div>
 {% endblock %}

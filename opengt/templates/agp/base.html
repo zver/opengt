@@ -21,19 +21,20 @@
                     message = 'nm';
                 }
                 document.write('<STRONG>Хочется сказать вам по простому, </STRONG>' + message_t + '');
-            }
-            
+            }     
             function display_date(){
                 date = new Date();
             }
         </script>
+		{% block script %}
+		{% endblock %}
         <title>ФГУП «Западно-Сибирское аэрогеодезическое предприятие»</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
         <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/style.css"/>
         <meta content="" name="description"/>
         <meta content="" name="keywords"/>
     </head>
-    <body bgcolor="#f2efe9" alink="#ffcc33" vlink="#42413f" marginwidth="0" marginheight="0" link="#42413f" leftmargin="0" topmargin="0">
+    <body onLoad="init()" bgcolor="#f2efe9" alink="#ffcc33" vlink="#42413f" marginwidth="0" marginheight="0" link="#42413f" leftmargin="0" topmargin="0">
         <script language="javascript">
             <!--
             //www.cgi.ru
