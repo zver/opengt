@@ -73,25 +73,27 @@
         <tr>
             <td>
                 <form method="post">
-					<h1>Регистрация <a href="/login">(авторизация)</a></h1>
+                    <div style="margin: 0pt; padding: 0pt;">
+                        <input name="authenticity_token" value="dc64db540b33d219d07b182ad4bfc8014731c0eb" type="hidden">
+                    </div><h1>Регистрация <a href="/login">(авторизация)</a></h1>
                     <label for="user_email" class="">
-                        Адрес почты
+                        Имя пользователя
                         <br>
-                        <input class="text" id="user_email" name="user[email]" size="30" style="width: 300px;" value="" type="text">
+                        {{ form.username }}
                     </label>
                     <label for="password">
                         Введите пароль
                         <br>
-                        <input class="text" id="user_password" name="user[password]" size="30" style="width: 300px;" value="" type="password">
+                        {{ form.password1 }}
                     </label>
                     <label for="password_confirmation">
                         ..еще раз
                         <br/>
-                        <input type="password" value="" style="width: 300px;" size="30" name="user[password_confirmation]" id="user_password_confirmation" class="text"/>
+                        {{ form.password2 }}
                     </label>
-					<label>
-						<input value="зарегистрировать" id="signup_button" type="submit">
-					</label>
+                    <label>
+                        <input value="зарегистрировать" id="signup_button" type="submit">
+                    </label>
                 </form>
             </td>
         </tr>

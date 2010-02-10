@@ -72,17 +72,19 @@
     <table class="standard_form" id="login" cellspacing="0" cellpadding="5" border="5">
         <tr>
             <td>
-                <form method="post">
-					<h1>Авторизация <a href="/registration">(регистрация)</a></h1>
+                <form method="post" action=".">
+                    <div style="margin: 0pt; padding: 0pt;">
+                        <input type="hidden" value="dc64db540b33d219d07b182ad4bfc8014731c0eb" name="authenticity_token"/>
+                    </div><input type="hidden" value="" name="return_to"/><h1>Авторизация <a href="/registration">(регистрация)</a></h1>
                     <label for="login">
-                        Адрес почты
+                        Имя пользователя
                         <br/>
-                        <input type="text" value="" tabindex="1" style="width: 300px;" name="login" id="login_field" class="text"/>
+                        {{ form.username }}
                     </label>
                     <label for="password">
                         Пароль
                         <br/>
-                        <input type="password" value="" tabindex="2" style="width: 300px;" name="password" id="password" class="text"/>
+                        {{ form.password }}
                     </label>
                     <label>
                         <input type="submit" value="войти" tabindex="3" name="commit"/>
