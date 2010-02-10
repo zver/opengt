@@ -14,3 +14,6 @@ def login(request):
 
 def registration(request):
 	return render_to_response('agp/registration.html', RequestContext(request))
+
+def trackers(request):
+	return render_to_response('agp/trackers.html', RequestContext(request))

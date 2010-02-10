@@ -1,9 +1,18 @@
 {% extends "agp/base.html" %}
 {% block script %}
-	<script type='text/javascript' src="http://www.openlayers.org/api/OpenLayers.js"></script>
-	<script type='text/javascript' src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-	<script src="{{ MEDIA_URL }}js/tyumen.js"></script>	
-{% endblock %}
+<script type='text/javascript' src="http://www.openlayers.org/api/OpenLayers.js">
+</script>
+<script type='text/javascript' src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js">
+</script>
+<script src="{{ MEDIA_URL }}js/tyumen.js">
+</script>
+<!--
+<script src="{{ MEDIA_URL }}js/all_map.js"></script>
+<script type='text/javascript' src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>
+<script type='text/javascript' src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhR_wWLPFku8Ix9i2SXYRVK3e45q1BQUd_beF8dtzKET_EteAjPdGDwqpQ'></script>
+<script type='text/javascript' src="http://api.maps.yahoo.com/ajaxymap?v=3.0&appid=euzuro-openlayers"></script>
+-->{% endblock %}
 {% block content %}
-	<div id="map" style="width:773px; height:523px; float:left; border:solid 1px black; margin-right:10px"></div>
+<div style="width: 100px; height: 30px; z-index:1; position:relative; border:solid 1px black; top:480px; left:660px"><img src="{{ MEDIA_URL }}images/banner_100x30.jpg"></div
+<div id="map" style="width:773px; height:523px; border:solid 1px black; margin-right:10px; position:relative; top:-30px"></div>
 {% endblock %}
