@@ -1,5 +1,5 @@
 from protocols.base import BaseReport
-from decimaldegrees import 
+from decimaldegrees import dm2decimal
 
 class GlobalsatReport(BaseReport):
 	def __init__(self, report_data):

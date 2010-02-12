@@ -20,6 +20,7 @@ class Type(models.Model):
 		verbose_name_plural = _('Tracker types')
 
 class Tracker(models.Model):
+	IMEI = models.CharField(u'IMEI', max_length=60)
 	model = models.ForeignKey(Model, verbose_name=_('Model'))
 	type = models.ForeignKey(Type, verbose_name=_('Type'))
 	creator = models.ForeignKey(User, verbose_name=_('Creator'), related_name='trackers_by_creator')
@@ -32,7 +33,7 @@ class Tracker(models.Model):
 class Position(models.Model):
 	date = models.DateTimeField(_('Date'), auto_now_add=True)
 	tracker = models.ForeignKey(Tracker, verbose_name=_('Tracker'))
-	point = models.PointField(_('Point'),  srid=2029)
+	point = models.PointField(_('Point'))
 	objects = models.GeoManager()
 	class Meta:
 		verbose_name = _('Position')
