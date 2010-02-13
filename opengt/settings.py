@@ -81,3 +81,5 @@ INSTALLED_APPS = (
 	'agp',
 	'tracker',
 )
+
+LOGIN_URL = '/login/'

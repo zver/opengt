@@ -24,11 +24,16 @@ def login(request):
 		form = AuthenticationForm(data=request.POST)
 		if form.is_valid():
 			auth_login(request, form.get_user())
-			return HttpResponseRedirect(reverse('trackers'))
+			return HttpResponseRedirect(reverse('map'))
 	else:
 		form = AuthenticationForm()
 
 	return render_to_response('agp/login.html', {'form': form}, RequestContext(request))
+
+from django.contrib.auth import logout as django_logout
+def logout(request):
+	django_logout(request)
+	return HttpResponseRedirect(reverse('login'))
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login as auth_login
