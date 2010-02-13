@@ -72,29 +72,28 @@
     <table class="standard_form" id="login" cellspacing="0" cellpadding="5" border="5">
         <tr>
             <td>
-                <form action="." id="signup_form" method="post">
+                <form method="post">
                     <div style="margin: 0pt; padding: 0pt;">
                         <input name="authenticity_token" value="dc64db540b33d219d07b182ad4bfc8014731c0eb" type="hidden">
-                    </div>
-					<h1>Регистрация <a href="/login">(авторизация)</a></h1>
+                    </div><h1>Регистрация <a href="/login">(авторизация)</a></h1>
                     <label for="user_email" class="">
                         Имя пользователя
                         <br>
-						{{ form.username }}
+                        {{ form.username }}
                     </label>
                     <label for="password">
                         Введите пароль
                         <br>
-						{{ form.password1 }}
+                        {{ form.password1 }}
                     </label>
                     <label for="password_confirmation">
                         ..еще раз
                         <br/>
-						{{ form.password2 }}
+                        {{ form.password2 }}
                     </label>
-					<label>
-						<input value="зарегистрировать" id="signup_button" type="submit">
-					</label>
+                    <label>
+                        <input value="зарегистрировать" id="signup_button" type="submit">
+                    </label>
                 </form>
             </td>
         </tr>

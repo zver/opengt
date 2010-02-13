@@ -75,17 +75,16 @@
                 <form method="post" action=".">
                     <div style="margin: 0pt; padding: 0pt;">
                         <input type="hidden" value="dc64db540b33d219d07b182ad4bfc8014731c0eb" name="authenticity_token"/>
-                    </div><input type="hidden" value="" name="return_to"/>
-					<h1>Авторизация <a href="/registration">(регистрация)</a></h1>
+                    </div><input type="hidden" value="" name="return_to"/><h1>Авторизация <a href="/registration">(регистрация)</a></h1>
                     <label for="login">
                         Имя пользователя
                         <br/>
-						{{ form.username }}
+                        {{ form.username }}
                     </label>
                     <label for="password">
                         Пароль
                         <br/>
-						{{ form.password }}
+                        {{ form.password }}
                     </label>
                     <label>
                         <input type="submit" value="войти" tabindex="3" name="commit"/>
