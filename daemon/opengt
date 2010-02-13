@@ -25,6 +25,9 @@ while 1:
 	if not gr.IMEI:
 		print "Not IMEI"
 		continue
+	if not gr.lon or not gr.lat:
+		print "no coordinats"
+		continue
 	print 'lon: %s, lat: %s' % (gr.lon, gr.lat)
 	tracker_qs = Tracker.objects.filter(IMEI=gr.IMEI)
 	if not tracker_qs.count():

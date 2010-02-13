@@ -17,15 +17,17 @@ class GlobalsatReport(BaseReport):
 			self.GPS_fix = '2D'
 		elif GPS_fix == '3':
 			self.GPS_fix = '3D'
-		longitude = m.group('longitude')
-		latitude = m.group('latitude')
-		longitude = dm2decimal(int(longitude[:4].replace('W', '-').replace('E','')), longitude[4:])
-		latitude = dm2decimal(int(latitude[:3].replace('S', '-').replace('N','')), latitude[3])
 
-		self.longitude = longitude
-		self.latitude = latitude
-		self.altitude = float(m.group('altitude'))
-		self.speed = float(m.group('speed')) * 1.852
+		if self.GPS_fix:
+			longitude = m.group('longitude')
+			latitude = m.group('latitude')
+			longitude = dm2decimal(int(longitude[:4].replace('W', '-').replace('E','')), longitude[4:])
+			latitude = dm2decimal(int(latitude[:3].replace('S', '-').replace('N','')), latitude[3:])
+
+			self.longitude = longitude
+			self.latitude = latitude
+			self.altitude = float(m.group('altitude'))
+			self.speed = float(m.group('speed')) * 1.852
 		self.satelites_count = int(m.group('satelites_count'))
 
 
