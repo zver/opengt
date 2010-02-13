@@ -72,6 +72,9 @@
     <table class="standard_form" id="login" cellspacing="0" cellpadding="5" border="5">
         <tr>
             <td>
+				{% if form.errors %}
+					{{ form.errors }}
+				{% endif %}
                 <form method="post" action=".">
                     <div style="margin: 0pt; padding: 0pt;">
                         <input type="hidden" value="dc64db540b33d219d07b182ad4bfc8014731c0eb" name="authenticity_token"/>
