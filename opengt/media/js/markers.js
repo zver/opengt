@@ -17,7 +17,6 @@ function init() {
 		projection : new OpenLayers.Projection("EPSG:900913"),
 		displayProjection : new OpenLayers.Projection("EPSG:4326")
 	});
-
 	var layerMapnik = new OpenLayers.Layer.OSM.Mapnik("ОСМ");
 
 	map.addLayers([layerMapnik]);
