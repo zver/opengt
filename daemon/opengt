@@ -5,7 +5,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '../opengt'))
 sys.path.insert(1, os.path.join(sys.path[0], '../..'))
 sys.path.insert(1, os.path.join(sys.path[0], '../../..'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-from tracker.models import Position
+from tracker.models import Position, Tracker
 
 import socket
 from protocols import GlobalsatReport
@@ -22,11 +22,15 @@ while 1:
 	print u"data: %s" % str(data)
 	if not data: break
 	gr = GlobalsatReport(str(data))
+	if not gr.IMEI:
+		print "Not IMEI"
+		continue
 	print 'lon: %s, lat: %s' % (gr.lon, gr.lat)
 	tracker_qs = Tracker.objects.filter(IMEI=gr.IMEI)
 	if not tracker_qs.count():
-		print "Tracker with imei %s not found" % gr.IMEI
+		print "Tracker with IMEI %s not found" % gr.IMEI
 		continue
+	tracker = tracker_qs[0]
 	p = Position.objects.create(tracker=tracker, point='POINT(%1.6f %1.6f)' % (gr.longitude, gr.latitude))
 	print "Position with id=%s created" % p.pk
 	conn.send("$OK!")
