@@ -49,4 +49,3 @@ class Position(models.Model):
 		verbose_name = _('Position')
 		verbose_name_plural = _('Positions')
 
-с
