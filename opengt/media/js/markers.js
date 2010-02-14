@@ -20,7 +20,7 @@ function init() {
 	var layerMapnik = new OpenLayers.Layer.OSM.Mapnik("ОСМ");
 
 	map.addLayers([layerMapnik]);
-	//38.83, 58.035
+
 	var lonLat = new OpenLayers.LonLat(65.54, 57.13).transform(new OpenLayers.Projection("EPSG:4326"), map.projection);
 	map.setCenter(lonLat, 12);
 	loadNDData();
