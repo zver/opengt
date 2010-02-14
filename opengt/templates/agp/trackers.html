@@ -1,21 +1,57 @@
 {% extends "agp/base.html" %}
 {% block script %}
 <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/form.css"/>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+	function add() {
+		$("#add_form").css("display", "block");
+		$("#del").css("display", "block");
+		$("#add").css("display", "none");
+	}
+	function del() {
+		$("#add_form").css("display", "none");
+		$("#del").css("display", "none");
+		$("#add").css("display", "block");
+	}
+</script>
 {% endblock %}
 {% block content %}
 <div id="map" style="width:773px; height:523px; float:left; margin-right:10px">
-    <div class="standard_form" id="login">
-        <form method="post">
-            <h1>Трекеры</h1>
+    <div class="standard_form" id="add_trackers">
+    	<h1>Трекеры</h1>
+    	<table class="track">
+    		<tr>
+    			<td class="first" >IMEI или ID</td>
+				<td class="first">Имя трекера</td>
+				<td class="first">Модель трекера</td>
+				<td class="first"></td>
+    		</tr>
+			<tr>
+				<td>3345657484536</td>
+				<td>Машина</td>
+				<td>TR-102</td>
+				<td><input type="button" value="удалить"/></td>
+			</tr>
+			<tr>
+				<td>3345657484536</td>
+				<td>Машина</td>
+				<td>TR-102</td>
+				<td><input type="button" value="удалить"/></td>
+			</tr>
+    	</table>
+		<br/>
+		<input id="add" type="button" value="добавить трекер" onclick="add()" style="display:block; padding:5px;">
+		<input id="del" type="button" value="убрать форму" onclick="del()" style="display:none; padding:5px;">
+        <form id="add_form" method="post" style="display:none">
             <label for="id">
                 IMEI или ID трекера
                 <br>
-                <input id="id_tracker" type="text" maxlength="30" name="tracker[id]"/>
+                <input type="text"/>
             </label>
             <label for="name">
                 Имя трекера
                 <br>
-                <input id="name_tracker" type="text" maxlength="30" name="tracker[name]"/>
+                <input type="text"/>
             </label>
             <label for="model">
                 Модель трекера
@@ -23,7 +59,7 @@
                 <input id="model_tracker" type="text" maxlenght="30" name="tracker[model]"/>
             </label>
             <label>
-                <input value="зарегистрировать трекер" id="signup_button" type="submit">
+                <input value="зарегистрировать трекер" type="submit">
             </label>
         </form>
     </div>
