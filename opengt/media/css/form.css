@@ -76,7 +76,7 @@
 		margin:1em 0 0 0;
 	}
 	table.track { border-collapse: collapse; width: 100%; }
-	table.track th, table.track td { border: 1px solid #ccc; padding: 2px 3px; vertical-align: top; }
+	table.track th, table.track td { border: 1px solid #ccc; padding: 2px 3px; vertical-align:middle; }
 	table.track td.first { background: #f4f4f4; }
-	table.track td {  }
+	table.track td { background-color:#FFFFFF; padding: 5px; }
 	td input { border:solid 1px #888; }

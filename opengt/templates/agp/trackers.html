@@ -18,7 +18,7 @@
 {% block content %}
 <div id="map" style="width:773px; height:523px; float:left; margin-right:10px">
     <div class="standard_form" id="add_trackers">
-    	<h1>Трекеры</h1>
+    	<h1>Трекеры <a href="/map/">(на карту)</a></h1>
     	<table class="track">
     		<tr>
     			<td class="first" >IMEI или ID</td>
@@ -44,19 +44,25 @@
 		<input id="del" type="button" value="убрать форму" onclick="del()" style="display:none; padding:5px;">
         <form id="add_form" method="post" style="display:none">
             <label for="id">
-                IMEI или ID трекера
-                <br>
-                <input type="text"/>
+                <input 	onblur="this.value=(this.value=='')?this.title:this.value;"
+						onfocus="this.value=(this.value==this.title)?'':this.value;"
+						value="IMEI или ID трекера"
+						title="IMEI или ID трекера"
+						type="text"/>
             </label>
             <label for="name">
-                Имя трекера
-                <br>
-                <input type="text"/>
+                <input 	onblur="this.value=(this.value=='')?this.title:this.value;"
+						onfocus="this.value=(this.value==this.title)?'':this.value;"
+						value="Имя трекера"
+						title="Имя трекера"
+						type="text"/>
             </label>
             <label for="model">
-                Модель трекера
-                <br/>
-                <input id="model_tracker" type="text" maxlenght="30" name="tracker[model]"/>
+                <input 	onblur="this.value=(this.value=='')?this.title:this.value;"
+						onfocus="this.value=(this.value==this.title)?'':this.value;"
+						value="Модель трекера"
+						title="Модель трекера"
+						type="text"/>
             </label>
             <label>
                 <input value="зарегистрировать трекер" type="submit">
