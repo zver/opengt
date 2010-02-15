@@ -26,6 +26,8 @@ function init() {
 	loadNDData();
 }
 
+OpenLayers.Renderer.symbol.bus = [10,0, 3,21, 10,18, 18,21, 10,0];
+
 function loadNDData() {
 	newroute = new OpenLayers.Layer.Vector("Маркеры", {
 		strategies : [ new OpenLayers.Strategy.BBOX() ],
@@ -49,10 +51,10 @@ function loadNDData() {
 				fillOpacity : 0.7,
 				pointRadius : 16,
 				rotation : "${angle}",
-				externalGraphic : "${image}",
+				//externalGraphic : "${image}",
 				//graphicHeight : 32,
 				//graphicYOffset : -16,
-				//graphicName: "${graphic}",
+				graphicName: "${graphic}",
 				fontSize : "16px",
 				cursor : "pointer"
 			},
