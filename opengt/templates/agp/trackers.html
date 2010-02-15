@@ -56,13 +56,13 @@
 
 		<form id="add_form" method="post" {% if not form.is_bound %} style="display:none"{% endif %} action="{% url trackers %}">
             <label for="id">
-				{{ form.IMEI }}&nbsp;&nbsp;{% if form.IMEI.errors %}{{ form.IMEI.errors|join:" "}}{% endif %}
+				{{ form.IMEI }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.IMEI.errors %}{{ form.IMEI.errors|join:" "}}{% endif %}</span>
             </label>
             <label for="name">
-				{{ form.name }}&nbsp;&nbsp;{% if form.name.errors %}{{ form.name.errors|join:" "}}{% endif %}
+				{{ form.name }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.name.errors %}{{ form.name.errors|join:" "}}{% endif %}</span>
             </label>
             <label for="model">
-				{{ form.model }}&nbsp;&nbsp;{% if form.model.errors %}{{ form.model.errors|join:" "}}{% endif %}
+				{{ form.model }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.model.errors %}{{ form.model.errors|join:" "}}{% endif %}</span>
             </label>
             <label>
                 <input value="зарегистрировать трекер" type="submit">
