@@ -4,14 +4,14 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script>
 	function add() {
-		$("#add_form").slideToggle();
-		$("#del").slideToggle();
-		$("#add").slideToggle();
+		$("#add_form").css("display", "block");
+		$("#del").css("display", "block");
+		$("#add").css("display", "none");
 	}
 	function del() {
-		$("#add_form").slideToggle();
-		$("#del").slideToggle();
-		$("#add").slideToggle();
+		$("#add_form").css("display", "none");
+		$("#del").css("display", "none");
+		$("#add").css("display", "block");
 	}
 </script>
 {% endblock %}
