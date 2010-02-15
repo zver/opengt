@@ -19,6 +19,7 @@
 <div id="map" style="width:773px; height:523px; float:left; margin-right:10px">
     <div class="standard_form" id="add_trackers">
     	<h1>Трекеры <a href="/map/">(на карту)</a></h1>
+		{% if trackers %}
     	<table class="track">
     		<tr>
     			<td class="first" >IMEI или ID</td>
@@ -26,43 +27,45 @@
 				<td class="first">Модель трекера</td>
 				<td class="first"></td>
     		</tr>
+			{% for tracker in trackers %}
 			<tr>
-				<td>3345657484536</td>
-				<td>Машина</td>
-				<td>TR-102</td>
-				<td><input type="button" value="удалить"/></td>
+				<td>{{ tracker.IMEI }}</td>
+				<td>{{ tracker.name }}</td>
+				<td>{{ tracker.model.name }}</td>
+				<td><form action="{% url del_tracker tracker.pk %}" method="GET"><input type="submit" value="удалить"/></form></td>
 			</tr>
-			<tr>
-				<td>3345657484536</td>
-				<td>Машина</td>
-				<td>TR-102</td>
-				<td><input type="button" value="удалить"/></td>
-			</tr>
+			{% endfor %}
+
     	</table>
+		{% else %}
+		Трекеров пока не было добавлено
+		{% endif %}
 		<br/>
+		{% if not form.is_bound %}
 		<input id="add" type="button" value="добавить трекер" onclick="add()" style="display:block; padding:5px;">
 		<input id="del" type="button" value="убрать форму" onclick="del()" style="display:none; padding:5px;">
-        <form id="add_form" method="post" style="display:none">
+		{% endif %}
+
+		ERRORS: {{ form.errors }}
+      {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+                <div class="error">{{ error }}</div>
+          {% endfor %}
+      {% endif %}
+
+
+		<form id="add_form" method="post" {% if not form.is_bound %}style="display:none"{% endif %} action="{% url trackers %}">
             <label for="id">
-                <input 	onblur="this.value=(this.value=='')?this.title:this.value;"
-						onfocus="this.value=(this.value==this.title)?'':this.value;"
-						value="IMEI или ID трекера"
-						title="IMEI или ID трекера"
-						type="text"/>
+				{% if form.IMEI.errors %}{{ form.IMEI.errors }}{% endif %}
+				{{ form.IMEI }}
             </label>
             <label for="name">
-                <input 	onblur="this.value=(this.value=='')?this.title:this.value;"
-						onfocus="this.value=(this.value==this.title)?'':this.value;"
-						value="Имя трекера"
-						title="Имя трекера"
-						type="text"/>
+				{% if form.name.errors %}{{ form.name.errors }}{% endif %}
+				{{ form.name }}
             </label>
             <label for="model">
-                <input 	onblur="this.value=(this.value=='')?this.title:this.value;"
-						onfocus="this.value=(this.value==this.title)?'':this.value;"
-						value="Модель трекера"
-						title="Модель трекера"
-						type="text"/>
+				{% if form.model.errors %}{{ form.model.errors }}{% endif %}
+				{{ form.model }}
             </label>
             <label>
                 <input value="зарегистрировать трекер" type="submit">

@@ -60,9 +60,13 @@ def trackers(request):
 	from tracker.forms import TrackerForm
 	trackers = Tracker.objects.filter(creator=request.user)
 	if request.POST:
-		form = TrackerForm(data=request.POST)
+		form = TrackerForm(data=request.POST, creator=request.user)
+		if form.is_valid():
+			new_tracker = form.save()
+			form = TrackerForm(creator=request.user)
 	else:
-		form = TrackerForm()
+		form = TrackerForm(creator=request.user)
+
 	return render_to_response('agp/trackers.html', {	'trackers': trackers,
 														'form':		form
 													}, RequestContext(request))
