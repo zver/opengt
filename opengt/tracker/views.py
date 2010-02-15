@@ -1,17 +1,38 @@
-from tracker.models import Position, Tracker
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.db.models import Q
+from django.conf import settings
+
+from pyproj import Geod
+
+from tracker.models import Position, Tracker
 
 def kml_trackers(request):
 	trackers = Tracker.objects.filter(Q(view_users=request.user) | Q(creator=request.user))
 	placemarks = ""
+	g = Geod(ellps='clrk66')
 	for tr in trackers:
 		pos_qs = Position.objects.filter(tracker=tr).order_by('-date')
-		if not pos_qs.count():
+		count = pos_qs.count()
+		if not count:
 			continue
-		p = pos_qs.order_by('-date')[0].point
-		placemarks += """<Placemark><name>%s</name><description>%s</description><angle>0</angle><image>/images/icons/busstop.png</image><graphic>circle</graphic><Point><coordinates>%1.6f, %1.6f</coordinates></Point></Placemark>""" % (tr.name, tr.description, p.x, p.y)
-	kml = """<?xml version="1.0" encoding="UTF-8"?>
-<kml xmlns="http://earth.google.com/kml/2.2"><Document>%s</Document></kml>""" % placemarks
+		pos_qs = pos_qs.order_by('-date')
+		p = pos_qs[0].point
+		p_prev = None
+		angle = 0.0
+		if count > 1:
+			p_prev = pos_qs[1].point
+			angle, angle2, dist = g.inv(p_prev.x, p_prev.y, p.x, p.y)
+			if dist < 10:
+				angle = 0.0
+
+		if angle:
+			image_url = settings.MEDIA_URL + 'images/icons/bus.png'
+			graphic = 'bus'
+		else:
+			image_url = settings.MEDIA_URL + 'images/icons/busstop.png'
+			graphic = 'circle'
+
+		placemarks += """<Placemark><name>%s</name><description>%s</description><angle>%1.4f</angle><image>%s</image><graphic>%s</graphic><Point><coordinates>%1.6f,%1.6f</coordinates></Point></Placemark>""" % (tr.name, tr.description, angle, image_url, graphic, p.x, p.y)
+	kml = """<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://earth.google.com/kml/2.2"><Document>%s</Document></kml>""" % placemarks
 	return HttpResponse(kml)
