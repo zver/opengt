@@ -22,7 +22,11 @@ class EchoRequestHandler(SocketServer.BaseRequestHandler ):
 		while 1:
 			data = self.request.recv(1024)
 
-			print u"data: %s" % str(data)
+			try:
+				print u"data: %s" % str(data)
+			except:
+				print u'not printable data'
+
 			if not data: break
 			gr = GlobalsatReport(str(data))
 			if not gr.IMEI:
