@@ -1,9 +1,10 @@
 from tracker.models import Position, Tracker
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.db.models import Q
 
 def kml_trackers(request):
-	trackers = Tracker.objects.filter(view_users=request.user)
+	trackers = Tracker.objects.filter(Q(view_users=request.user) | Q(creator=request.user))
 	placemarks = ""
 	for tr in trackers:
 		pos_qs = Position.objects.filter(tracker=tr).order_by('-date')
