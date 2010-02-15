@@ -42,8 +42,17 @@
 		{% endif %}
 		<br/>
 		
+		{% if not form.is_bound %}
 		<input id="add" type="button" value="добавить трекер" onclick="add()" style="display:block; padding:5px;">
 		<input id="del" type="button" value="убрать форму" onclick="del()" style="display:none; padding:5px;">
+		{% endif %}
+
+		{% if form.non_field_errors %}
+			{% for error in form.non_field_errors %}
+				<div class="error">{{ error }}</div>
+			{% endfor %}
+		{% endif %}
+
 
 		<form id="add_form" method="post" {% if not form.is_bound %} style="display:none"{% endif %} action="{% url trackers %}">
             <label for="id">
