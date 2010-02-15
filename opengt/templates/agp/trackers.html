@@ -46,7 +46,6 @@
 		<input id="del" type="button" value="убрать форму" onclick="del()" style="display:none; padding:5px;">
 		{% endif %}
 
-		ERRORS: {{ form.errors }}
       {% if form.non_field_errors %}
           {% for error in form.non_field_errors %}
                 <div class="error">{{ error }}</div>
