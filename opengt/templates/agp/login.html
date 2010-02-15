@@ -15,21 +15,16 @@
             {% endif %}
             <form method="post" action=".">
                 <h1>Авторизация <a href="/registration">(регистрация)</a></h1>
-                {% if form.username.errors %}
-                {{ form.username.errors }}
-                {% endif %}
                 <label for="login">
                     Имя пользователя
                     <br/>
-                    {{ form.username }}
+                    {{ form.username }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.username.errors %}{{ form.username.errors|join:" " }}{% endif %}</span>
                 </label>
-                {% if form.password.errors %}
-                {{ form.password.errors }}
-                {% endif %}
+                
                 <label for="password">
                     Пароль
                     <br/>
-                    {{ form.password }}
+                    {{ form.password }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.password.errors %}{{ form.password.errors|join:" " }}{% endif %}</span>
                 </label>
                 <label>
                     <input type="submit" value="войти" tabindex="3" name="commit"/>
