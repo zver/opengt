@@ -6,6 +6,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 
+from tracker.models import Tracker
+
 
 def index(request):
 	# FIXME: переделать логику на редиректы
@@ -53,6 +55,31 @@ def registration(request):
 
 	return render_to_response('agp/registration.html', {'form': form}, RequestContext(request))
 
-
+@login_required
 def trackers(request):
-	return render_to_response('agp/trackers.html', RequestContext(request))
+	from tracker.forms import TrackerForm
+	trackers = Tracker.objects.filter(creator=request.user)
+	if request.POST:
+		form = TrackerForm(data=request.POST)
+	else:
+		form = TrackerForm()
+	return render_to_response('agp/trackers.html', {	'trackers': trackers,
+														'form':		form
+													}, RequestContext(request))
+
+@login_required
+def del_tracker(request, tracker_id):
+	qs = Tracker.objects.filter(pk=tracker_id)
+	if qs.count() and qs[0].creator == request.user:
+		qs.delete()
+	return HttpResponseRedirect(reverse('trackers'))
+
+@login_required
+def edit_tracker(request, tracker_id):
+	qs = Tracker.objects.filter(pk=tracker_id)
+	if not qs.count() or qs[0].creator != request.user:
+		return HttpResponseRedirect(reverse('trackers'))
+	tracker = qs[0]
+	return render_to_response('agp/tracker.html', {'tracker': tracker}, RequestContext(request))
+
+

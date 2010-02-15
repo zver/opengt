@@ -10,4 +10,7 @@ urlpatterns = patterns('',
 	url(r'^logout/$', logout, name="logout"),
 	url(r'^registration/$', registration, name="registration"),
 	url(r'^trackers/$', trackers, name="trackers"),
+	url(r'^trackers/(?P<tracker_id>\d+)/$', trackers, name="edit_tracker"),
+	url(r'^trackers/del/(?P<tracker_id>\d+)/$', trackers, name="del_tracker"),
+
 )

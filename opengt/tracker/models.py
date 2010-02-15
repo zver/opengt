@@ -42,6 +42,7 @@ class Position(models.Model):
 	date = models.DateTimeField(_('Date'), auto_now_add=True)
 	tracker = models.ForeignKey(Tracker, verbose_name=_('Tracker'))
 	point = models.PointField(_('Point'))
+	speed = models.FloatField(_('Speed'), help_text=_('Speed in km/h'), blank=True, null=True)
 	objects = models.GeoManager()
 	def __unicode__(self):
 		return u'%s %s' % (self.date, self.tracker)
