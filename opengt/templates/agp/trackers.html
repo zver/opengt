@@ -18,7 +18,7 @@
 {% block content %}
 <div id="map" style="width:773px; height:523px; float:left; margin-right:10px">
     <div class="standard_form" id="add_trackers">
-    	<h1>Трекеры <a href="/map/">(на карту)</a></h1>
+		<h1>Трекеры <a href="{% url map %}">(на карту)</a></h1>
 		{% if trackers %}
     	<table class="track">
     		<tr>
