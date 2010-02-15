@@ -49,11 +49,11 @@ function loadNDData() {
 				fillOpacity : 0.7,
 				pointRadius : 16,
 				rotation : "${angle}",
-				//externalGraphic : "${image}",
+				externalGraphic : "${image}",
 				//graphicHeight : 32,
 				//graphicYOffset : -16,
 				//graphicName: "${graphic}",
-				fontSize : "18px",
+				fontSize : "16px",
 				cursor : "pointer"
 			},
 			"select" : {
