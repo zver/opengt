@@ -21,15 +21,21 @@ def kml_trackers(request):
 		p = pos.point
 		p_prev = None
 		angle = 0.0
+		stay = True
 		if count > 1:
 			p_prev = pos_qs[1].point
 			angle, angle2, dist = g.inv(p_prev.x, p_prev.y, p.x, p.y)
-			if dist < 10 or pos.speed == 0:
-				angle = 0.0
+			if dist < settings.MIN_STAY_DISTANCE \
+				or pos.speed == 0 \
+				or datetime.datetime.now() - pos.date > datetime.timedelta(seconds=settings.MIN_LINK_TIMEOUT):
+				stay = True
+			else:
+				stay = False
 
-		if angle:
+		if stay:
 			image_url = settings.MEDIA_URL + 'images/icons/bus.png'
 			graphic = 'bus'
+			angle = 0.0
 		else:
 			image_url = settings.MEDIA_URL + 'images/icons/busstop.png'
 			graphic = 'circle'
