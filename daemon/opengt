@@ -41,7 +41,10 @@ class EchoRequestHandler(SocketServer.BaseRequestHandler ):
 				print "Tracker with IMEI %s not found" % gr.IMEI
 				continue
 			tracker = tracker_qs[0]
-			p = Position.objects.create(tracker=tracker, point='POINT(%1.6f %1.6f)' % (gr.longitude, gr.latitude))
+			p = Position.objects.create(
+										tracker = tracker,
+										point = 'POINT(%1.6f %1.6f)' % (gr.longitude, gr.latitude),
+										speed = gr.speed,)
 			print "Position with id=%s created" % p.pk
 
 			self.request.send("$OK!")
