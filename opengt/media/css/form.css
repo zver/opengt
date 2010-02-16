@@ -3,7 +3,7 @@
     }
 	
     .standard_form {
-        margin: 3em auto 0 auto;
+        margin: 1em auto 0 auto;
     }
     
     .standard_form td {
@@ -59,10 +59,6 @@
     .standard_form form input, .standard_form form textarea, .standard_form form select {
         border: 1px solid #888;
     }
-    
-	.standard_form form input #, .standard_form form textarea, .standard_form form select {
-
-	}
 	
     .standard_form form input.text {
         font-size: 110%;
@@ -88,6 +84,7 @@
 	table.track td.first { background: #f4f4f4; }
 	table.track td { background-color:#FFFFFF; padding: 5px; }
 	td input { border:solid 1px #888; }
+	
 	ul.errorlist {
 		list-style-type:none;
 		border:solid 1px #a00;

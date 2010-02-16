@@ -4,39 +4,36 @@
 {% endblock %}
 {% block content %}
 <div id="map" style="width:773px; height:523px; float:left; margin-right:10px">
-	{% if form.non_field_errors %}
-		{% for error in form.non_field_errors %}
-			<div class="error">{{ error }}</div>
-		{% endfor %}
-	{% endif %}
-    <table class="standard_form" id="login" cellspacing="0" cellpadding="5" border="5">
-        <tr>
-            <td>
-                <form method="post">
-                    <h1>Регистрация <a href="/login">(авторизация)</a></h1>
-					{% if form.username.errors %}{{form.username.errors}}{% endif %}
-                    <label for="user_email" class="">
-                        Имя пользователя
-                        <br>
-                        {{ form.username }}
-                    </label>
-					{% if form.password1.errors %}{{form.password1.errors}}{% endif %}
-                    <label for="password">
-                        Введите пароль
-                        <br>
-                        {{ form.password1 }}
-                    </label>
-					{% if form.password2.errors %}{{form.password2.errors}}{% endif %}
-                    <label for="password_confirmation">
-                        ..еще раз
-                        <br/>
-                        {{ form.password2 }}
-                    </label>
-                    <label>
-                        <input value="зарегистрировать" id="signup_button" type="submit">
-                    </label>
-                </form>
-            </td>
-        </tr>
-    </table>
+    {% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+    <div class="error">
+        {{ error }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div class="standard_form" id="login">
+        <div id="add_trackers" class="standard_form">
+            <form method="post">
+                <h1>Регистрация <a href="/login">(авторизация)</a></h1>
+                <label for="user_email" class="">
+                    Имя пользователя
+                    <br>
+                    {{ form.username }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.username.errors %}{{form.username.errors|join:" "}}{% endif %}</span>
+                </label>
+                <label for="password">
+                    Введите пароль
+                    <br>
+                    {{ form.password1 }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.password1.errors %}{{form.password1.errors|join:" "}}{% endif %}</span>
+                </label>
+                <label for="password_confirmation">
+                    ..еще раз
+                    <br/>
+                    {{ form.password2 }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.password2.errors %}{{form.password2.errors|join:" "}}{% endif %}</span>
+                </label>
+                <label>
+                    <input value="зарегистрировать" id="signup_button" type="submit">
+                </label>
+            </form>
+        </div>
+    </div>
 </div> {% endblock %}
