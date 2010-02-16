@@ -17,13 +17,14 @@ def kml_trackers(request):
 		if not count:
 			continue
 		pos_qs = pos_qs.order_by('-date')
-		p = pos_qs[0].point
+		pos = pos_qs[0]
+		p = pos.point
 		p_prev = None
 		angle = 0.0
 		if count > 1:
 			p_prev = pos_qs[1].point
 			angle, angle2, dist = g.inv(p_prev.x, p_prev.y, p.x, p.y)
-			if dist < 10:
+			if dist < 10 or pos.speed == 0:
 				angle = 0.0
 
 		if angle:
