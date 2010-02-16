@@ -66,7 +66,7 @@ function loadNDData() {
 	});
 
 	newroute.events.register('loadend', this, function() {
-		setTimeout("updateKML()",5000);
+		setTimeout("updateKML()",1000);
 	});
 
 	map.addLayer(newroute);
