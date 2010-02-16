@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.conf import settings
 
 from pyproj import Geod
+import datetime
 
 from tracker.models import Position, Tracker
 
