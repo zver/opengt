@@ -34,12 +34,13 @@ def kml_trackers(request):
 				stay = False
 
 		if stay:
-			image_url = settings.MEDIA_URL + 'images/icons/bus.png'
-			graphic = 'bus'
-			angle = 0.0
-		else:
 			image_url = settings.MEDIA_URL + 'images/icons/busstop.png'
 			graphic = 'circle'
+			angle = 0.0
+		else:
+			image_url = settings.MEDIA_URL + 'images/icons/bus.png'
+			graphic = 'bus'
+
 
 		placemarks += """<Placemark><name>%s</name><description>%s</description><angle>%1.4f</angle><image>%s</image><graphic>%s</graphic><Point><coordinates>%1.6f,%1.6f</coordinates></Point></Placemark>""" % (tr.name, tr.description, angle, image_url, graphic, p.x, p.y)
 	kml = """<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://earth.google.com/kml/2.2"><Document>%s</Document></kml>""" % placemarks
