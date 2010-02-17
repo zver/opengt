@@ -11,8 +11,7 @@ from tracker.forms import TrackerForm
 
 
 def index(request):
-	# FIXME: переделать логику на редиректы
-	return render_to_response('agp/index.html', RequestContext(request))
+	return HttpResponseRedirect(reverse('trackers'))
 
 @login_required
 def map(request):
@@ -38,11 +37,11 @@ def logout(request):
 	django_logout(request)
 	return HttpResponseRedirect(reverse('login'))
 
-from django.contrib.auth.forms import UserCreationForm
+from agp.forms import RegistrationForm
 from django.contrib.auth import login as auth_login
 def registration(request):
 	if request.POST:
-		form = UserCreationForm(data=request.POST)
+		form = RegistrationForm(data=request.POST)
 		if form.is_valid():
 			user = form.save()
 
@@ -52,7 +51,7 @@ def registration(request):
 			auth_login(request, user)
 			return HttpResponseRedirect(reverse('trackers'))
 	else:
-		form = UserCreationForm()
+		form = RegistrationForm()
 
 	return render_to_response('agp/registration.html', {'form': form}, RequestContext(request))
 

@@ -30,6 +30,11 @@
                     <br/>
                     {{ form.password2 }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.password2.errors %}{{form.password2.errors|join:" "}}{% endif %}</span>
                 </label>
+                <label for="email">
+                    Адрес электропочты
+                    <br/>
+                    {{ form.email }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.email.errors %}{{form.email.errors|join:" "}}{% endif %}</span>
+                </label>
                 <label>
                     <input value="зарегистрировать" id="signup_button" type="submit">
                 </label>
