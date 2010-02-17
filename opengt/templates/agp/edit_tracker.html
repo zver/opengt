@@ -1,6 +1,12 @@
 {% extends "agp/base.html" %}
 {% block script %}
 <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/form.css"/>
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/colorpicker.css" />
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/colorpicker.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/eye.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/layout.js"></script>
 {% endblock %}
 {% block content %}
 <div id="map" style="width:773px; height:523px; float:left; margin-right:10px">
@@ -12,6 +18,9 @@
             </label>
             <label for="name">
 				{{ form.name }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.name.errors %}{{ form.name.errors|join:" "}}{% endif %}</span>
+            </label>
+			<label for="color">
+				<input type="text" maxlength="6" size="6" id="colorpickerField2" value="00ff00" />
             </label>
             <label for="model">
 				{{ form.model }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.model.errors %}{{ form.model.errors|join:" "}}{% endif %}</span>

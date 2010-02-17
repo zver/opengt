@@ -1,7 +1,12 @@
 {% extends "agp/base.html" %}
 {% block script %}
 <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/form.css"/>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/colorpicker.css" />
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/colorpicker.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/eye.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/layout.js"></script>
 <script>
 	function add() {
 		$("#add_form").css("display", "block");
@@ -13,17 +18,18 @@
 		$("#del").css("display", "none");
 		$("#add").css("display", "block");
 	}
-</script>
+</script>	
 {% endblock %}
 {% block content %}
 <div id="map" style="width:773px; height:523px; float:left; margin-right:10px">
     <div class="standard_form" id="add_trackers">
-		<h1>Трекеры <a href="{% url map %}">(на карту)</a></h1>
+		<h1>Трекеры <a href="{% url map %}">(на карту)</a></h1>	
 		{% if trackers %}
     	<table class="track">
     		<tr>
     			<td class="first" >IMEI или ID</td>
 				<td class="first">Имя трекера</td>
+				<td class="first">Цвет трекера</td>
 				<td class="first">Модель трекера</td>
 				<td class="first"></td>
     		</tr>
@@ -31,6 +37,7 @@
 			<tr>
 				<td>{{ tracker.IMEI }}</td>
 				<td>{{ tracker.name }}</td>
+				<td>#888888</td>
 				<td>{{ tracker.model.name }}</td>
 				<td>
 					<form style="float:left; margin:0 5px 0 0" action="{% url del_tracker tracker.pk %}" method="GET"><input type="submit" value="удалить"/></form>
@@ -65,7 +72,10 @@
             <label for="name">
 				{{ form.name }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.name.errors %}{{ form.name.errors|join:" "}}{% endif %}</span>
             </label>
-            <label for="model">
+			<label for="color">
+				<input type="text" maxlength="6" size="6" id="colorpickerField2" value="00ff00" />
+            </label>
+			<label for="model">
 				{{ form.model }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.model.errors %}{{ form.model.errors|join:" "}}{% endif %}</span>
             </label>
             <label>
