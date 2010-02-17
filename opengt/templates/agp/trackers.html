@@ -32,7 +32,11 @@
 				<td>{{ tracker.IMEI }}</td>
 				<td>{{ tracker.name }}</td>
 				<td>{{ tracker.model.name }}</td>
-				<td><form action="{% url del_tracker tracker.pk %}" method="GET"><input type="submit" value="удалить"/></form></td>
+				<td>
+					<form action="{% url del_tracker tracker.pk %}" method="GET"><input type="submit" value="удалить"/></form>
+					<form action="{% url edit_tracker tracker.pk %}" method="GET"><input type="submit" value="редактировать"/></form>
+				</td>
+
 			</tr>
 			{% endfor %}
 

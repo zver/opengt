@@ -1,0 +1,22 @@
+{% extends "agp/base.html" %}
+
+{% block content %}
+<div id="map" style="width:773px; height:523px; float:left; margin-right:10px">
+    <div class="standard_form" id="add_trackers">
+		<form id="edit_form" method="POST" action=".">
+            <label for="id">
+				{{ form.IMEI }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.IMEI.errors %}{{ form.IMEI.errors|join:" "}}{% endif %}</span>
+            </label>
+            <label for="name">
+				{{ form.name }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.name.errors %}{{ form.name.errors|join:" "}}{% endif %}</span>
+            </label>
+            <label for="model">
+				{{ form.model }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.model.errors %}{{ form.model.errors|join:" "}}{% endif %}</span>
+            </label>
+            <label>
+                <input value="Сохранить" type="submit">
+            </label>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 
 from tracker.models import Tracker
+from tracker.forms import TrackerForm
 
 
 def index(request):
@@ -57,7 +58,6 @@ def registration(request):
 
 @login_required
 def trackers(request):
-	from tracker.forms import TrackerForm
 	trackers = Tracker.objects.filter(creator=request.user)
 	if request.POST:
 		form = TrackerForm(data=request.POST, creator=request.user)
@@ -84,6 +84,15 @@ def edit_tracker(request, tracker_id):
 	if not qs.count() or qs[0].creator != request.user:
 		return HttpResponseRedirect(reverse('trackers'))
 	tracker = qs[0]
-	return render_to_response('agp/tracker.html', {'tracker': tracker}, RequestContext(request))
+	if request.POST:
+		form = TrackerForm(instance=tracker, data=request.POST, creator=request.user)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(reverse('trackers'))
+	form = TrackerForm(instance=tracker, creator=request.user)
+	return render_to_response('agp/edit_tracker.html', {
+										'tracker'	: tracker,
+										'form'		: form,
+										}, RequestContext(request))
 
 
