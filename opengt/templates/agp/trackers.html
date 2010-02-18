@@ -18,6 +18,50 @@
 		$("#del").css("display", "none");
 		$("#add").css("display", "block");
 	}
+</script>
+<script>	
+		$(function() {
+			$("#id_IMEI").attr("value","Введите ID или IMEI") 	
+			$("#id_name").attr("value","Введите имя трекера")
+			$("#colorpickerField2").attr("value","Выберите цвет")
+			
+			$("#id_IMEI").click( function() { 
+				a = $("#id_IMEI").attr("value");
+				b = "Введите ID или IMEI";
+				if (a == b) {
+					$(this).attr("value","")
+				};
+			});
+
+			$("#id_name").click( function() { 
+				a = $("#id_name").attr("value");
+				b = "Введите имя трекера";
+				if (a == b) {
+					$(this).attr("value","")
+				};
+			});
+			
+			$("#id_IMEI").blur( function() {
+				b = $("#id_IMEI").attr("value");
+				if (b == "") {
+					$("#id_IMEI").attr("value","Введите ID или IMEI")
+				}
+			});
+			
+			$("#id_name").blur( function() {
+				c = $("#id_name").attr("value");
+				if (c == "") {											
+					$("#id_name").attr("value","Введите имя трекера")	
+				}
+			});
+
+			$("#colorpickerField2").blur( function() {
+				c = $("#colorpickerField2").attr("value");
+				if (c == "") {
+					$("#colorpickerField2").attr("value","Выберите цвет")
+				}
+			});
+		});
 </script>	
 {% endblock %}
 {% block content %}
@@ -73,7 +117,7 @@
 				{{ form.name }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.name.errors %}{{ form.name.errors|join:" "}}{% endif %}</span>
             </label>
 			<label for="color">
-				<input type="text" maxlength="6" size="6" id="colorpickerField2" value="00ff00" />
+				<input type="text" maxlength="6" size="6" id="colorpickerField2" />
             </label>
 			<label for="model">
 				{{ form.model }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.model.errors %}{{ form.model.errors|join:" "}}{% endif %}</span>
