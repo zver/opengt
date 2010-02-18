@@ -61,8 +61,8 @@ class Tracker(models.Model):
 			time_delta = (p.date-prev_p.date).seconds
 			if time_delta < settings.MIN_LINK_TIMEOUT:
 				link_time += time_delta
-				angle, angle2, dist = g.inv(p_prev.point.x, p_prev.point.y, p.point.x, p.point.y)
-				avg_speed = dist/float((pos2.date-pos1.date).seconds)
+				angle, angle2, dist = g.inv(prev_p.point.x, prev_p.point.y, p.point.x, p.point.y)
+				avg_speed = dist/float((p.date-prev_p.date).seconds)
 				avg_speed = avg_speed*10/36.
 				if avg_speed > settings.STAY_AVG_SPEED:
 					stay_time += time_delta
