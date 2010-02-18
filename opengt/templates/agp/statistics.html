@@ -1,4 +1,5 @@
 {% extends "agp/base.html" %}
+{% load pretty %}
 {% block script %}
 <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/form.css"/>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
@@ -15,13 +16,15 @@
 				<td class="first">Время без движения</td>
 				<td class="first">Пройденный путь</td>
     		</tr>
+			{% for tr in trackers %}
 			<tr>
-				<td>46647</td>
-				<td>677457</td>
-				<td>888888</td>
-				<td>5674848</td>
-				<td>457548</td>
+				<td>{{ tr.IMEI }}</td>
+				<td>{{ tr.stats.link_time|pretty_timedelta }}</td>
+				<td>{{ tr.stats.move_time|pretty_timedelta }}</td>
+				<td>{{ tr.stats.stay_time|pretty_timedelta }}</td>
+				<td>{{ tr.stats.distance|pretty_distance }}</td>
 			</tr>
+			{% endfor %}
     	</table>
     </div>
 </div>

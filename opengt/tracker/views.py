@@ -24,9 +24,12 @@ def kml_trackers(request):
 		angle = 0.0
 		stay = True
 		if count > 1:
-			p_prev = pos_qs[1].point
+			pos_prev = pos_qs[1]
+			p_prev = pos_prev.point
 			angle, angle2, dist = g.inv(p_prev.x, p_prev.y, p.x, p.y)
-			if dist < settings.MIN_STAY_DISTANCE \
+			avg_speed = dist/float((pos.date-pos_prev.date).seconds)
+			avg_speed = avg_speed*10/36.
+			if avg_speed <= settings.STAY_AVG_SPEED \
 				or pos.speed == 0 \
 				or datetime.datetime.now() - pos.date > datetime.timedelta(seconds=settings.MIN_LINK_TIMEOUT):
 				stay = True

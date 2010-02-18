@@ -32,15 +32,62 @@ class Tracker(models.Model):
 	creator = models.ForeignKey(User, verbose_name=_('Creator'), related_name='trackers_by_creator')
 	view_users = models.ManyToManyField(User, verbose_name=_('View users'), related_name='trackers_by_viewer', blank=True, null=True)
 	view_groups = models.ManyToManyField(Group, verbose_name=_('View groups'), blank=True, null=True)
+
 	class Meta:
 		verbose_name = _('Tracker')
 		verbose_name_plural = _('Trackers')
 	def __unicode__(self):
 		return u'%s (IMEI: %s, %s)' % (self.model, self.IMEI, self.type)
+	def get_stats(self, start_date=None, end_date=None):
+		link_time = 0
+		move_time = 0
+		stay_time = 0
+		distance = 0
+
+		qs = self.positions.all()
+		if start_date:
+			qs = qs.filter(date__gte=start_date)
+		if end_date:
+			qs = qs.filter(date__lte=end_date)
+
+		prev_p = None
+		from pyproj import Geod
+		g = Geod(ellps='clrk66')
+		for p in qs:
+			if not prev_p:
+				prev_p = p
+				continue
+			time_delta = (p.date-prev_p.date).seconds
+			if time_delta < settings.MIN_LINK_TIMEOUT:
+				link_time += time_delta
+				angle, angle2, dist = g.inv(p_prev.point.x, p_prev.point.y, p.point.x, p.point.y)
+				avg_speed = dist/float((pos2.date-pos1.date).seconds)
+				avg_speed = avg_speed*10/36.
+				if avg_speed > settings.STAY_AVG_SPEED:
+					stay_time += time_delta
+				distance += dist
+
+			move_time = link_time - stay_time
+
+			prev_p = p
+		return 	{	
+					'link_time'	: link_time,
+					'move_time'	: move_time,
+					'stay_time' : stay_time,
+					'distance'	: distance,
+				}
+
+	_stats = {}
+	@property
+	def stats(self):
+		if not self._stats:
+			self._stats = self.get_stats()
+		return self._stats
+
 
 class Position(models.Model):
 	date = models.DateTimeField(_('Date'), auto_now_add=True)
-	tracker = models.ForeignKey(Tracker, verbose_name=_('Tracker'))
+	tracker = models.ForeignKey(Tracker, verbose_name=_('Tracker'), related_name='positions')
 	point = models.PointField(_('Point'))
 	speed = models.FloatField(_('Speed'), help_text=_('Speed in km/h'), blank=True, null=True)
 	objects = models.GeoManager()

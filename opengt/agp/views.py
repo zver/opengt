@@ -19,7 +19,8 @@ def map(request):
 
 @login_required
 def statistics(request):
-	return render_to_response('agp/statistics.html', RequestContext(request))
+	trackers = Tracker.objects.filter(creator=request.user)
+	return render_to_response('agp/statistics.html', {'trackers': trackers}, RequestContext(request))
 
 from django.contrib.auth.forms import AuthenticationForm
 def login(request):
