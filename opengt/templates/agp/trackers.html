@@ -10,9 +10,11 @@
 <script type="text/javascript" src="{{ MEDIA_URL }}js/change_value_form.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/hide_view_form.js"></script>
 <script>
- 	$("#id_IMEI").attr("value","Введите ID или IMEI") 	
-	$("#id_name").attr("value","Введите имя трекера")
-	$("#colorpickerField2").attr("value","Выберите цвет")
+	$(function() {
+ 		$("#id_IMEI").attr("value","Введите ID или IMEI") 	
+		$("#id_name").attr("value","Введите имя трекера")
+		$("#colorpickerField2").attr("value","Выберите цвет")
+	});
 </script>
 {% endblock %}
 {% block content %}
