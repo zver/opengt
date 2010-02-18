@@ -1,0 +1,28 @@
+{% extends "agp/base.html" %}
+{% block script %}
+<link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/form.css"/>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+{% endblock %}
+{% block content %}
+<div id="map" style="width:773px; height:523px; float:left; margin-right:10px">
+    <div class="standard_form" id="add_trackers">
+    	<h1>Статистика <a href="{% url map %}">(на карту)</a>&nbsp;<a href="{% url trackers %}">(трекеры)</a></h1>
+		<table class="track">
+    		<tr>
+    			<td class="first" >IMEI или ID</td>
+				<td class="first">Общее время работы</td>
+				<td class="first">Время в движении</td>
+				<td class="first">Время без движения</td>
+				<td class="first">Пройденный путь</td>
+    		</tr>
+			<tr>
+				<td>46647</td>
+				<td>677457</td>
+				<td>888888</td>
+				<td>5674848</td>
+				<td>457548</td>
+			</tr>
+    	</table>
+    </div>
+</div>
+{% endblock %}

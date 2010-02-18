@@ -17,6 +17,10 @@ def index(request):
 def map(request):
 	return render_to_response('agp/map.html', RequestContext(request))
 
+@login_required
+def statistics(request):
+	return render_to_response('agp/statistics.html', RequestContext(request))
+
 from django.contrib.auth.forms import AuthenticationForm
 def login(request):
 	if request.user.is_authenticated():
