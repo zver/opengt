@@ -3,6 +3,8 @@ from django.contrib.auth.models import User, Group
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
+from tracker.fields import ColorField
+
 PROTOCOLS = (
 		('globalsat', 'Globalsat'),
 )
@@ -33,7 +35,7 @@ class Tracker(models.Model):
 	creator = models.ForeignKey(User, verbose_name=_('Creator'), related_name='trackers_by_creator')
 	view_users = models.ManyToManyField(User, verbose_name=_('View users'), related_name='trackers_by_viewer', blank=True, null=True)
 	view_groups = models.ManyToManyField(Group, verbose_name=_('View groups'), blank=True, null=True)
-	marker_color = models.CharField(_('Marker color'), max_length=6, help_text=_('Color in hex mode'), default='00ff00')
+	marker_color = ColorField(_('Marker color'), help_text=_('Color in hex mode'), default='00ff00')
 
 	class Meta:
 		verbose_name = _('Tracker')
