@@ -43,7 +43,7 @@ function loadNDData() {
 		styleMap : new OpenLayers.StyleMap( {
 			"default" : {
 				label : "${name}",
-				fillColor : "#00ff00",
+				fillColor : "${marker_color}",
 				strokeColor : "#ffffff",
 				strokeOpacity : 1,
 				strokeWidth : 1,

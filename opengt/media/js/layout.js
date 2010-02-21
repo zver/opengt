@@ -22,7 +22,7 @@
 			$('#colorpickerHolder2').stop().animate({height: widt ? 0 : 173}, 500);
 			widt = !widt;
 		});
-		$('#colorpickerField1, #colorpickerField2, #colorpickerField3').ColorPicker({
+		$('#id_marker_color').ColorPicker({
 			onSubmit: function(hsb, hex, rgb, el) {
 				$(el).val(hex);
 				$(el).ColorPickerHide();

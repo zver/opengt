@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/colorpicker.css" />
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}js/colorpicker.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/jscolor/jscolor.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/eye.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/layout.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}js/change_value_form.js"></script>
@@ -21,7 +21,7 @@
 				{{ form.name }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.name.errors %}{{ form.name.errors|join:" "}}{% endif %}</span>
             </label>
 			<label for="color">
-				<input type="text" maxlength="6" size="6" id="colorpickerField2" value="00ff00" />
+				{{ form.marker_color }}
             </label>
             <label for="model">
 				{{ form.model }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.model.errors %}{{ form.model.errors|join:" "}}{% endif %}</span>

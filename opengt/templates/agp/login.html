@@ -26,6 +26,9 @@
                     <br/>
                     {{ form.password }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.password.errors %}{{ form.password.errors|join:" " }}{% endif %}</span>
                 </label>
+				{% if next %}
+					<input type=hidden name="next" value="{{ next }}" />
+				{% endif %}
                 <label>
                     <input type="submit" value="войти" tabindex="3" name="commit"/>
                 </label>
