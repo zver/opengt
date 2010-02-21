@@ -12,7 +12,11 @@ def kml_trackers(request):
 	trackers = Tracker.objects.filter(Q(view_users=request.user) | Q(creator=request.user))
 	placemarks = ""
 	g = Geod(ellps='clrk66')
+	added_tracker_pks = []
 	for tr in trackers:
+		if tr.pk in added_tracker_pks:
+			continue
+		added_tracker_pks.append(tr.pk)
 		pos_qs = Position.objects.filter(tracker=tr).order_by('-date')
 		count = pos_qs.count()
 		if not count:
