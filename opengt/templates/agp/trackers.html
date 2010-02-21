@@ -13,7 +13,7 @@
 	$(function() {
  		$("#id_IMEI").attr("value","Введите ID или IMEI") 	
 		$("#id_name").attr("value","Введите имя трекера")
-		$("#colorpickerField2").attr("value","Выберите цвет")
+		$("#id_marker_color").attr("value","Выберите цвет")
 	});
 </script>
 {% endblock %}
@@ -34,7 +34,7 @@
 			<tr>
 				<td>{{ tracker.IMEI }}</td>
 				<td>{{ tracker.name }}</td>
-				<td>#888888</td>
+				<td>#{{ tracker.marker_color }}</td>
 				<td>{{ tracker.model.name }}</td>
 				<td>
 					<form style="float:left; margin:0 5px 0 0" action="{% url del_tracker tracker.pk %}" method="GET"><input type="submit" value="удалить"/></form>
@@ -70,7 +70,7 @@
 				{{ form.name }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.name.errors %}{{ form.name.errors|join:" "}}{% endif %}</span>
             </label>
 			<label for="color">
-				<input type="text" maxlength="6" size="6" id="colorpickerField2" />
+				{{ form.marker_color }}
             </label>
 			<label for="model">
 				{{ form.model }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.model.errors %}{{ form.model.errors|join:" "}}{% endif %}</span>

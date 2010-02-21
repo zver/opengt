@@ -26,16 +26,20 @@ from django.contrib.auth.forms import AuthenticationForm
 def login(request):
 	if request.user.is_authenticated():
 		return HttpResponseRedirect(reverse('trackers'))
+	next = request.REQUEST.get('next', reverse('map'))
 
 	if request.POST:
 		form = AuthenticationForm(data=request.POST)
 		if form.is_valid():
 			auth_login(request, form.get_user())
-			return HttpResponseRedirect(reverse('map'))
+			return HttpResponseRedirect(next)
 	else:
 		form = AuthenticationForm()
 
-	return render_to_response('agp/login.html', {'form': form}, RequestContext(request))
+	return render_to_response('agp/login.html', {
+													'form': form,
+													'next': next,
+												}, RequestContext(request))
 
 from django.contrib.auth import logout as django_logout
 def logout(request):

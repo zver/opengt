@@ -21,7 +21,7 @@
 				{{ form.name }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.name.errors %}{{ form.name.errors|join:" "}}{% endif %}</span>
             </label>
 			<label for="color">
-				<input type="text" maxlength="6" size="6" id="colorpickerField2" value="00ff00" />
+				{{ form.marker_color }}
             </label>
             <label for="model">
 				{{ form.model }}&nbsp;&nbsp;<span style="color:#FF0000;">{% if form.model.errors %}{{ form.model.errors|join:" "}}{% endif %}</span>
