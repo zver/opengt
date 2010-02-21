@@ -1,0 +1,6 @@
+/var/log/opengtd.log {
+	weekly
+    missingok
+    notifempty
+    delaycompress
+}
