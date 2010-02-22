@@ -29,7 +29,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from tracker.models import Tracker, Position
 
 import SocketServer
-from protocols import GlobalsatReport
+from opengt.protocols import GlobalsatReport
 
 import re
 
