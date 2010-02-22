@@ -79,7 +79,7 @@ INSTALLED_APPS = (
 	'django.contrib.admindocs',
 	'django.contrib.admin',
 	'agp',
-	'tracker',
+	'django_opengt.tracker',
 )
 
 LOGIN_URL = '/login/'
