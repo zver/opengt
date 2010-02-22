@@ -65,7 +65,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-ROOT_URLCONF = 'opengt.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
 	os.path.join(PROJECT_ROOT, 'templates/'),

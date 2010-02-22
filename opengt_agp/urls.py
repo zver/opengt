@@ -9,7 +9,7 @@ urlpatterns = patterns('',
 	(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 	(r'^admin/', include(admin.site.urls)),
 	(r'^', include('agp.urls')),
-	(r'^trackers/', include('tracker.urls')),
+	(r'^trackers/', include('django_opengt.tracker.urls')),
 )
 
 if settings.DEBUG:
