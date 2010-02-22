@@ -1,7 +1,7 @@
 import logging
 logger = logging.getLogger(__name__)
 
-from tracker.models import Tracker, Position
+from django_opengt.tracker.models import Tracker, Position
 
 
 class BaseReport:

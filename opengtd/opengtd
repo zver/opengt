@@ -1,8 +1,12 @@
 #!/usr/bin/env python
-
+import sys
 # Get config
+config_filename = '/etc/opengtd.conf'
 from configobj import ConfigObj
-config = ConfigObj('/etc/opengtd.conf')
+config = ConfigObj(config_filename)
+if not config:
+	print "Can't read config from %s file" % config_filename
+	sys.exit(1)
 
 # Set logger
 import logging
@@ -22,18 +26,18 @@ logger.info("Starting opengtd...")
 
 
 # Set path
-import sys, os
+import os
 django_opengt_path = config['django_opengt_path']
+sys.path.insert(0, '..')
 sys.path.insert(1, django_opengt_path)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-from tracker.models import Tracker, Position
 
 import SocketServer
 from opengt.protocols import GlobalsatReport
 
 import re
 
-import protocols
+from opengt import protocols
 
 # Run tcp socket servers for each protocol
 for protocol_name in config['protocols']:

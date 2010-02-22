@@ -1,4 +1,4 @@
-from protocols.base import BaseReport
+from opengt.protocols.base import BaseReport
 from decimaldegrees import dm2decimal
 
 import logging
