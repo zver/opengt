@@ -1,5 +1,5 @@
 server {
-	listen	88;
+	listen	80;
 	server_name agp.example.org;
 
 	location @django_opengt_media {
