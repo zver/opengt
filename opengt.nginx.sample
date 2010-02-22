@@ -8,7 +8,7 @@ server {
 
 	location /m/ {
 		rewrite				^/m/(.*)$ /media/$1 break;
-		root				/var/www/webapps/agp;
+		root				/var/www/webapps/opengt_agp;
 		error_page			404 = @django_opengt_media;
 	}
 
