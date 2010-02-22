@@ -33,6 +33,7 @@ setup(
 	],
 	data_files=[
 				('share/django_opengt/media/js/jscolor', glob('django_opengt/media/js/jscolor/*')),
+				('share/django_opengt/', ['opengt.nginx.sample']),
 #				('/etc/init.d', ['opengtd/opengtd.init']),
 	]
 )
