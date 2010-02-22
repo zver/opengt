@@ -1,5 +1,5 @@
 from django.contrib import admin
-from tracker.models import *
+from django_opengt.tracker.models import *
 
 admin.site.register(Model)
 admin.site.register(Type)

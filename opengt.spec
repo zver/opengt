@@ -51,6 +51,7 @@ install -pD -m 644 opengtd/opengtd.conf %buildroot%_sysconfdir/opengtd.conf
 
 # Install sample agp web app
 %define AGP_INSTALL_DIR /var/www/webapps/agp
+%add_python_lib_path %AGP_INSTALL_DIR
 mkdir -p %buildroot%AGP_INSTALL_DIR
 cp -r django_opengt/agp %buildroot%AGP_INSTALL_DIR
 cp -r django_opengt/media %buildroot%AGP_INSTALL_DIR

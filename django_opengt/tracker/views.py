@@ -6,7 +6,7 @@ from django.conf import settings
 from pyproj import Geod
 import datetime
 
-from tracker.models import Position, Tracker
+from django_opengt.tracker.models import Position, Tracker
 
 def kml_trackers(request):
 	trackers = Tracker.objects.filter(Q(view_users=request.user) | Q(creator=request.user))

@@ -6,8 +6,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 
-from tracker.models import Tracker
-from tracker.forms import TrackerForm
+from django_opengt.tracker.models import Tracker
+from django_opengt.tracker.forms import TrackerForm
 
 
 def index(request):

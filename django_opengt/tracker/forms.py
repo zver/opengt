@@ -1,5 +1,5 @@
 from django import forms
-from tracker.models import Tracker
+from django_opengt.tracker.models import Tracker
 
 class TrackerForm(forms.ModelForm):
 	def __init__(self, creator, *args, **kwargs):
