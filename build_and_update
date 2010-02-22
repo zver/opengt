@@ -1,3 +1,4 @@
 #!/bin/sh
 rpmbb opengt.spec && \
 sudo rpm -Uhv $HOME/RPM/RPMS/i586/*opengt*.i586.rpm $HOME/RPM/RPMS/i586/osolutions-webapps-agp-*.i586.rpm
+sudo service nginx restart

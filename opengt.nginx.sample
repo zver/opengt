@@ -1,5 +1,5 @@
 server {
-	listen	80;
+	listen	88;
 	server_name agp.example.org;
 
 	location @django_opengt_media {
@@ -7,13 +7,14 @@ server {
 	}
 
 	location /m/ {
+		autoindex			on;
 		rewrite				^/m/(.*)$ /media/$1 break;
 		root				/var/www/webapps/opengt_agp;
 		error_page			404 = @django_opengt_media;
 	}
 
 	location / {
-		proxy_set_header	Host $host;
-		proxy_pass			http://127.0.0.1:8080;
+		proxy_set_header		Host $host;
+		proxy_pass				http://127.0.0.1:8100;
 	}
 }
