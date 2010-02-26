@@ -30,7 +30,7 @@ class BaseReport:
 			return False
 		logger.debug('lon: %s, lat: %s' % (self.lon, self.lat))
 		if not self.lon or not self.lat:
-			logger.warn("no coordinats")
+			logger.debug("no coordinats")
 			return False
 		return True
 
