@@ -30,6 +30,7 @@ setup(
 			'opengt/protocols',
 			'django_opengt',
 			'django_opengt/tracker',
+			'django_opengt/tracker/templatetags',
 	],
 	data_files=[
 				('share/django_opengt/media/js/jscolor', glob('django_opengt/media/js/jscolor/*')),
