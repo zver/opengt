@@ -58,8 +58,11 @@ class Tracker(models.Model):
 		from pyproj import Geod
 		g = Geod(ellps='clrk66')
 		for p in qs:
+			if not prev_p:
+				prev_p = p
+				continue
 			time_delta = (p.date-prev_p.date).seconds
-			if not prev_p or time_delta == 0:
+			if time_delta == 0:
 				prev_p = p
 				continue
 			if time_delta < settings.MIN_LINK_TIMEOUT:
