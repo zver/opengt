@@ -57,3 +57,28 @@ def kml_trackers(request):
 		placemarks += """<Placemark><name>%s</name><description>%s</description><angle>%1.4f</angle><image>%s</image><graphic>%s</graphic><marker_color>#%s</marker_color><Point><coordinates>%1.6f,%1.6f</coordinates></Point></Placemark>""" % (tr.name, tr.description, angle, image_url, graphic, marker_color, p.x, p.y)
 	kml = """<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://earth.google.com/kml/2.2"><Document>%s</Document></kml>""" % placemarks
 	return HttpResponse(kml)
+
+def gpx_trackers(request, last_seconds):
+	""" Return GPX file format for all view trackers with limit by last_seconds """
+	trackers = Tracker.objects.filter(Q(view_users=request.user) | Q(creator=request.user))
+	gpx = '''<?xml version="1.0"?><gpx version="1.0" creator="Django opengt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/0" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">'''
+	from django_opengt.tracker.utils import get_segments
+	min_date = datetime.datetime.now() - datetime.timedelta(seconds=int(last_seconds))
+	for tr in trackers:
+		segments = get_segments(tr.positions.filter(date__gte=min_date).order_by('date'))
+		if not segments:
+			continue
+		gpx += '<trk>\n<name>%s</name>\n' % tr.name
+		for seg in segments:
+			gpx += '<trkseg>\n'
+			for pos in seg:
+				gpx += '<trkpt lat="%(lat)1.6f" lon="%(lon)1.6f"><time>%(time)s</time></trkpt>\n' % {
+						'lat'		: pos.point.y,
+						'lon'		: pos.point.x,
+						'time'		: pos.date.isoformat(),
+				}
+			gpx += '</trkseg>\n'
+		gpx += '</trk>\n'
+	gpx += '</gpx>\n'
+
+	return HttpResponse(gpx)

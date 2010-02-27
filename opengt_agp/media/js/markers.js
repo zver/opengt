@@ -21,7 +21,12 @@ function init() {
 
 	map.addLayers([layerMapnik]);
 
-	var lonLat = new OpenLayers.LonLat(65.54, 57.13).transform(new OpenLayers.Projection("EPSG:4326"), map.projection);
+//	Tyumen
+//	var lonLat = new OpenLayers.LonLat(65.54, 57.13).transform(new OpenLayers.Projection("EPSG:4326"), map.projection);
+
+//	Tobolsk
+	var lonLat = new OpenLayers.LonLat(68.28, 58.22).transform(new OpenLayers.Projection("EPSG:4326"), map.projection);
+
 	map.setCenter(lonLat, 12);
 	loadNDData();
 }
@@ -29,7 +34,7 @@ function init() {
 OpenLayers.Renderer.symbol.bus = [10,0, 3,21, 10,18, 18,21, 10,0];
 
 function loadNDData() {
-	newroute = new OpenLayers.Layer.Vector("Маркеры", {
+	kml_trackers = new OpenLayers.Layer.Vector("Маркеры", {
 		strategies : [ new OpenLayers.Strategy.BBOX() ],
 		projection : new OpenLayers.Projection("EPSG:4326"),
 		protocol : new OpenLayers.Protocol.HTTP( {
@@ -64,17 +69,23 @@ function loadNDData() {
 			}
 		})
 	});
-
-	newroute.events.register('loadend', this, function() {
-		setTimeout("updateKML()",10000);
+	kml_trackers.events.register('loadend', this, function() {
+		setTimeout("updateKML()", 10000);
 	});
+	map.addLayer(kml_trackers);
 
-	map.addLayer(newroute);
+	// Add the Layer with GPX Track
+	var lgpx = new OpenLayers.Layer.GML("Пути за сутки", "/trackers/gpx/86400/", {
+						format:		OpenLayers.Format.GPX,
+						style:		{strokeColor: "green", strokeWidth: 5, strokeOpacity: 0.5},
+						projection: new OpenLayers.Projection("EPSG:4326")
+	});
+	map.addLayer(lgpx);
 
-	route = newroute;
-	route.redraw(true);
+	kml_trackers.redraw(true);
 }
 
 function updateKML() {
-	route.refresh({force: true});
+	kml_trackers.refresh({force: true});
 }
+

@@ -85,4 +85,4 @@ INSTALLED_APPS = (
 LOGIN_URL = '/login/'
 
 STAY_AVG_SPEED = 2 # in km/h
-MIN_LINK_TIMEOUT = 100 # in seconds
+MIN_LINK_TIMEOUT = 300 # in seconds
