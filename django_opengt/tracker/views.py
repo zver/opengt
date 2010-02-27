@@ -29,21 +29,22 @@ def kml_trackers(request):
 		p = pos.point
 		p_prev = None
 		angle = 0.0
-		stay = True
+		stay = None
 		if datetime.datetime.now() - pos.date > datetime.timedelta(seconds=settings.MIN_LINK_TIMEOUT):
 			stay = True
 		elif pos.speed != None:
 			stay = pos.speed <= settings.STAY_AVG_SPEED
-		elif count > 1:
+		if count > 1:
 			pos_prev = pos_qs[1]
 			p_prev = pos_prev.point
 			angle, angle2, dist = g.inv(p_prev.x, p_prev.y, p.x, p.y)
-			avg_speed = dist/float((pos.date-pos_prev.date).seconds)
-			avg_speed = avg_speed*10/36.
-			logger.debug("avg_speed: %s" % avg_speed)
-
-			stay = avg_speed <= settings.STAY_AVG_SPEED
-
+			if stay == None:
+				avg_speed = dist/float((pos.date-pos_prev.date).seconds)
+				avg_speed = avg_speed*10/36.
+				logger.debug("avg_speed: %s" % avg_speed)
+				stay = avg_speed <= settings.STAY_AVG_SPEED
+		if stay == None:
+			stay = True
 		if stay:
 			image_url = settings.MEDIA_URL + 'images/icons/busstop.png'
 			graphic = 'circle'
