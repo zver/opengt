@@ -2,7 +2,7 @@
 VERSION=`cat opengt.spec|grep Version|awk -F': ' '{ print $2; }'`
 RELEASE=`cat opengt.spec|grep Release|awk -F': ' '{ print $2; }'`
 FILES=`ls -1 $HOME/RPM/RPMS/i586/*opengt*$VERSION-$RELEASE.i586.rpm $HOME/RPM/RPMS/i586/osolutions-webapps-agp-*$VERSION-$RELEASE.i586.rpm`
-rpmbb opengt.spec || (echo "Build failed. Exit."; exit 1)
+rpmbb opengt.spec || { echo "Build failed. Exit."; exit 1; }
 rpm -q opengtd && sudo rpm -Uhv $FILES || sudo rpm -ihv $FILES
 sudo service nginx restart
 
