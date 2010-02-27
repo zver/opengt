@@ -49,6 +49,4 @@ class GlobalsatRequestHandler(BaseRequestHandler):
 			gr = GlobalsatReport(str(data))
 			if gr.is_valid:
 				gr.save()
-			self.request.send("$OK!")
-
 
