@@ -58,23 +58,24 @@ class Tracker(models.Model):
 		from pyproj import Geod
 		g = Geod(ellps='clrk66')
 		for p in qs:
-			if not prev_p or (p.date-prev_p.date).seconds == 0:
+			time_delta = (p.date-prev_p.date).seconds
+			if not prev_p or time_delta == 0:
 				prev_p = p
 				continue
-			time_delta = (p.date-prev_p.date).seconds
 			if time_delta < settings.MIN_LINK_TIMEOUT:
 				link_time += time_delta
 				angle, angle2, dist = g.inv(prev_p.point.x, prev_p.point.y, p.point.x, p.point.y)
-				s = (p.date-prev_p.date).seconds
-				avg_speed = float(dist)/float((p.date-prev_p.date).seconds)
-				avg_speed = avg_speed*10.0/36.
-				if avg_speed > settings.STAY_AVG_SPEED:
+				if p.speed == None:
+					avg_speed = float(dist)/float(time_delta)
+					avg_speed = avg_speed*10/36.
+					if avg_speed < settings.STAY_AVG_SPEED:
+						stay_time += time_delta
+				elif p.speed < settings.STAY_AVG_SPEED:
 					stay_time += time_delta
 				distance += dist
-
-			move_time = link_time - stay_time
-
 			prev_p = p
+		move_time = link_time - stay_time
+
 		return 	{	
 					'link_time'	: link_time,
 					'move_time'	: move_time,
