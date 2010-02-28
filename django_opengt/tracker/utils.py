@@ -13,11 +13,12 @@ def get_segments(positions_qs):
 		time_delta = (pos.date-prev_pos.date).seconds
 		if time_delta < settings.MIN_LINK_TIMEOUT:
 			seg.append(pos)
-		elif seg:
-			segments.append(seg)
-			seg = []
+		else:
+			if len(seg) > 1:
+				segments.append(seg)
+			seg = [pos]
 		prev_pos = pos
-	if seg:
+	if len(seg) > 1:
 		segments.append(seg)
 	return segments
 		
