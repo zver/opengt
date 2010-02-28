@@ -69,23 +69,44 @@ function loadNDData() {
 			}
 		})
 	});
-	kml_trackers.events.register('loadend', this, function() {
-		setTimeout("updateKML()", 10000);
-	});
 	map.addLayer(kml_trackers);
 
+
 	// Add the Layer with GPX Track
-	var lgpx = new OpenLayers.Layer.GML("Пути за сутки", "/trackers/gpx/86400/", {
+	var lgpx = new OpenLayers.Layer.Vector("Пути за сутки", {
+		strategies : [ new OpenLayers.Strategy.BBOX() ],
+		projection : new OpenLayers.Projection("EPSG:4326"),
+		protocol : new OpenLayers.Protocol.HTTP( {
+			url : "/trackers/gpx/86400/",
+			format : new OpenLayers.Format.GPX()
+		}),
+		styleMap : new OpenLayers.StyleMap( {
+			   "default" : {
+					strokeColor: "green",
+					strokeWidth: 5,
+					strokeOpacity: 0.5
+				}
+		})
+	});
+/*	var lgpx2 = new OpenLayers.Layer.GML("Пути за сутки", "/trackers/gpx/86400/", {
 						format:		OpenLayers.Format.GPX,
 						style:		{strokeColor: "green", strokeWidth: 5, strokeOpacity: 0.5},
 						projection: new OpenLayers.Projection("EPSG:4326")
-	});
+	});*/
 	map.addLayer(lgpx);
 
-	kml_trackers.redraw(true);
-}
 
-function updateKML() {
-	kml_trackers.refresh({force: true});
+	var s = new OpenLayers.Strategy.Refresh({interval: 10000, force: true});
+	s.setLayer(kml_trackers);
+	s.activate();
+	s.reset();
+
+	var s2 = new OpenLayers.Strategy.Refresh({interval: 10000, force: true});
+	s2.setLayer(lgpx);
+	s2.activate();
+	s2.reset();
+
+	kml_trackers.redraw(true);
+	lgpx.redraw(true);
 }
 
