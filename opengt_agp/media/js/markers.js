@@ -34,6 +34,7 @@ function init() {
 OpenLayers.Renderer.symbol.bus = [10,0, 3,21, 10,18, 18,21, 10,0];
 
 function loadNDData() {
+	// Add KML layer with placemarks
 	kml_trackers = new OpenLayers.Layer.Vector("Маркеры", {
 		strategies : [ new OpenLayers.Strategy.BBOX() ],
 		projection : new OpenLayers.Projection("EPSG:4326"),
@@ -88,11 +89,7 @@ function loadNDData() {
 				}
 		})
 	});
-/*	var lgpx2 = new OpenLayers.Layer.GML("Пути за сутки", "/trackers/gpx/86400/", {
-						format:		OpenLayers.Format.GPX,
-						style:		{strokeColor: "green", strokeWidth: 5, strokeOpacity: 0.5},
-						projection: new OpenLayers.Projection("EPSG:4326")
-	});*/
+
 	map.addLayer(lgpx);
 
 
