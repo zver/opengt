@@ -22,10 +22,10 @@ function init() {
 	map.addLayers([layerMapnik]);
 
 //	Tyumen
-//	var lonLat = new OpenLayers.LonLat(65.54, 57.13).transform(new OpenLayers.Projection("EPSG:4326"), map.projection);
+	var lonLat = new OpenLayers.LonLat(65.54, 57.13).transform(new OpenLayers.Projection("EPSG:4326"), map.projection);
 
 //	Tobolsk
-	var lonLat = new OpenLayers.LonLat(68.28, 58.22).transform(new OpenLayers.Projection("EPSG:4326"), map.projection);
+//	var lonLat = new OpenLayers.LonLat(68.28, 58.22).transform(new OpenLayers.Projection("EPSG:4326"), map.projection);
 
 	map.setCenter(lonLat, 12);
 	loadNDData();
