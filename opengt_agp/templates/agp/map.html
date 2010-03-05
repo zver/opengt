@@ -36,14 +36,20 @@
         <div id="body" style="display:none;">
             <div id="OpenLayers.Control.LayerSwitcher_4_layersDiv" style="padding: 5px 0px 5px 10px; background-color: darkblue; height: 100%; opacity: 0.75;">
                 <div style="padding-left: 3px;">
-                    <a href=/trackers/ style="color:#FFFFFF;">Трекеры</a>
+					<a href="{% url trackers %}" style="color:#FFFFFF;">Трекеры</a>
                 </div>
                 <div style="padding-left: 3px;">
-                    <a href=/statistics/ style="color:#FFFFFF;">Статистика</a>
+					<a href="{% url statistics %}" style="color:#FFFFFF;">Статистика</a>
                 </div>
 				<div style="padding-left: 3px;">
-                    <a href=/logout/ style="color:#FFFFFF;">Выйти</a>
+					<a href="{% url logout %}" style="color:#FFFFFF;">Выйти</a>
                 </div>
+				{% for tr in trackers %}
+				<div style="padding-left: 3px;">
+					<a href="#" style="color:#FFFFFF;" onclick="set_map_to({{ tr.last_position.point.x }}, {{ tr.last_position.point.y}}); return false;">{{ tr.name }}</a>
+                </div>
+				{% endfor %}
+
             </div>
             <div style="background-color: transparent;">
                 <span style="overflow: hidden; background-color: darkblue; display: block; height: 2px; font-size: 1px; margin-left: 1px; margin-right: 1px; border-left-width: 1px; border-right-width: 0px; opacity: 0.75;"></span>

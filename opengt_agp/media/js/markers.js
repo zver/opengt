@@ -1,5 +1,10 @@
 var map;
 
+function set_map_to(lon, lat) {
+	var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.projection);
+	map.setCenter(lonLat, 12);
+}
+
 function init() {
 	map = new OpenLayers.Map('map', {
 		controls: [	
@@ -22,12 +27,11 @@ function init() {
 	map.addLayers([layerMapnik]);
 
 //	Tyumen
-	var lonLat = new OpenLayers.LonLat(65.54, 57.13).transform(new OpenLayers.Projection("EPSG:4326"), map.projection);
+	set_map_to(65.54, 57.13);
 
 //	Tobolsk
-//	var lonLat = new OpenLayers.LonLat(68.28, 58.22).transform(new OpenLayers.Projection("EPSG:4326"), map.projection);
+//	set_map_to(68.28, 58.22);
 
-	map.setCenter(lonLat, 12);
 	loadNDData();
 }
 

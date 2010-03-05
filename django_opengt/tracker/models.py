@@ -42,6 +42,9 @@ class Tracker(models.Model):
 		verbose_name_plural = _('Trackers')
 	def __unicode__(self):
 		return u'%s (IMEI: %s, %s)' % (self.model, self.IMEI, self.type)
+	@property
+	def last_position(self):
+		return self.positions.all().order_by('-date')[0]
 	def get_stats(self, start_date=None, end_date=None):
 		link_time = 0
 		move_time = 0

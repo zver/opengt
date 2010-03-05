@@ -15,7 +15,10 @@ def index(request):
 
 @login_required
 def map(request):
-	return render_to_response('agp/map.html', RequestContext(request))
+	trackers = Tracker.objects.filter(creator=request.user)
+	return render_to_response('agp/map.html', {
+					'trackers':	trackers,
+			}, RequestContext(request))
 
 @login_required
 def statistics(request):
