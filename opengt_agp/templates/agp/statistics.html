@@ -3,11 +3,31 @@
 {% block script %}
 <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/form.css"/>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+
+<!--<link rel="stylesheet" type="text/css" href="/media/css/base.css" /> -->
+<link rel="stylesheet" type="text/css" href="/media/css/forms.css" /> 
+<script type="text/javascript" src="/admin/jsi18n/"></script> 
+<script type="text/javascript" src="/media/js/core.js"></script> 
+<script type="text/javascript" src="/media/js/admin/RelatedObjectLookups.js"></script> 
+<script type="text/javascript" src="/media/js/getElementsBySelector.js"></script> 
+<script type="text/javascript" src="/media/js/actions.js"></script> 
+<script type="text/javascript" src="/media/js/SelectBox.js"></script> 
+<script type="text/javascript" src="/media/js/SelectFilter2.js"></script> 
+<script type="text/javascript" src="/media/js/calendar.js"></script> 
+<script type="text/javascript" src="/media/js/admin/DateTimeShortcuts.js"></script> 
+
 {% endblock %}
 {% block content %}
 <div id="map" style="width:773px; height:523px; float:left; margin-right:10px">
     <div class="standard_form" id="add_trackers">
     	<h1>Статистика <a href="{% url map %}">(на карту)</a>&nbsp;<a href="{% url trackers %}">(трекеры)</a></h1>
+		{% if form %}
+			<form action="." method="POST">
+				{{ form.start_date }}
+				{{ form.end_date }}
+				<input type="submit" value="Фильтровать">
+			</form>
+		{% endif %}
 		<table class="track">
     		<tr>
     			<td class="first" >IMEI или ID</td>

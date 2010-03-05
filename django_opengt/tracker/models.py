@@ -86,13 +86,6 @@ class Tracker(models.Model):
 					'distance'	: distance,
 				}
 
-	_stats = {}
-	@property
-	def stats(self):
-		if not self._stats:
-			self._stats = self.get_stats()
-		return self._stats
-
 
 class Position(models.Model):
 	date = models.DateTimeField(_('Date'), auto_now_add=True)

@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from django.contrib.admin.widgets import AdminSplitDateTime
 
 class RegistrationForm(UserCreationForm):
 	email = forms.EmailField(label="Email")
@@ -9,3 +10,9 @@ class RegistrationForm(UserCreationForm):
 		if commit:
 			user.save()
 		return user
+
+
+class StatForm(forms.Form):
+	start_date = forms.DateTimeField(required=False, widget=AdminSplitDateTime())
+	end_date = forms.DateTimeField(required=False, widget=AdminSplitDateTime())
+

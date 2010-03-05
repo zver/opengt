@@ -19,8 +19,25 @@ def map(request):
 
 @login_required
 def statistics(request):
+	from agp.forms import StatForm
 	trackers = Tracker.objects.filter(creator=request.user)
-	return render_to_response('agp/statistics.html', {'trackers': trackers}, RequestContext(request))
+	start_date = None
+	end_date = None
+	if request.POST:
+		form = StatForm(data=request.POST)
+		if form.is_valid():
+			start_date = form.cleaned_data['start_date']
+			end_date = form.cleaned_data['end_date']
+	else:
+		form = StatForm()
+
+	for tr in trackers:
+		tr.stats = tr.get_stats(start_date, end_date)
+
+	return render_to_response('agp/statistics.html', {
+					'trackers': trackers,
+					'form':	form,
+			}, RequestContext(request))
 
 from django.contrib.auth.forms import AuthenticationForm
 def login(request):
