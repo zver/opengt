@@ -73,7 +73,10 @@ class Tracker(models.Model):
 				continue
 			if time_delta < settings.MIN_LINK_TIMEOUT:
 				link_time += time_delta
-				angle, angle2, dist = g.inv(prev_p.point.x, prev_p.point.y, p.point.x, p.point.y)
+				try:
+					angle, angle2, dist = g.inv(prev_p.point.x, prev_p.point.y, p.point.x, p.point.y)
+				except ValueError: # except for 'may be' antipodal points 
+					continue
 				if p.speed == None:
 					avg_speed = float(dist)/float(time_delta)
 					avg_speed = avg_speed*10/36.
