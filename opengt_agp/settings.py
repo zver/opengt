@@ -80,7 +80,6 @@ INSTALLED_APPS = (
 	'django.contrib.admin',
 	'agp',
 	'django_opengt.tracker',
-	'django_extensions',
 )
 
 LOGIN_URL = '/login/'
