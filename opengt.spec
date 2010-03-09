@@ -12,7 +12,7 @@ Source: %name-%version.tar
 %setup_python_module django-opengt
 
 %description
-Open geo tracker django modules and daemon for receive, 
+Open geo tracker django modules and daemon for receive,
 parse and save data from trackers.
 
 
