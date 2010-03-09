@@ -8,12 +8,13 @@ rpm -q opengtd && sudo rpm -Uhv $FILES || sudo rpm -ihv $FILES
 sudo service nginx restart
 
 if [ "$1" = "server" ]; then
+	$ssh 'sudo rm -f /tmp/*.rpm'
 	rsync -av $FILES map.spo:/tmp/
 	ssh="ssh map.spo"
 	echo "Update rpm"
 	$ssh 'sudo rpm -Uhv /tmp/*.rpm'
 #	echo "Remove rpm"
-#	$ssh 'sudo rm -f /tmp/*.rpm'
+
 	echo "Restart nginx"
 	$ssh 'sudo service nginx restart'
 	git push spo
