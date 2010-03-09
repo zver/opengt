@@ -1,7 +1,7 @@
 #!/bin/sh
 VERSION="$(fgrep Version opengt.spec |cut -d ' ' -f2)"
 RELEASE="$(fgrep Release opengt.spec |cut -d ' ' -f2)"
-FILES="$(ls -1 $HOME/RPM/RPMS/i586/*opengt*$VERSION-$RELEASE.i586.rpm $HOME/RPM/RPMS/i586/osolutions-webapps-agp-*$VERSION-$RELEASE.i586.rpm)"
+FILES="$(ls -1 $HOME/RPM/RPMS/noarch/*opengt*$VERSION-$RELEASE.*.rpm $HOME/RPM/RPMS/noarch/osolutions-webapps-agp-*$VERSION-$RELEASE.*.rpm)"
 
 rpmbb opengt.spec || { echo "Build failed. Exit."; exit 1; }
 rpm -q opengtd && sudo rpm -Uhv $FILES || sudo rpm -ihv $FILES
