@@ -1,32 +1,6 @@
 <html>
     <head>
-        <script language="javascript">
-            function display_title(){
-                var hours = date.getHours();
-                var message = '';
-                if (hours >= 6) {
-                    message_t = '<STRONG>Доброго утречка</STRONG>';
-                    message = 'mm';
-                }
-                if ((hours >= 12) && (hours < 17)) {
-                    message_t = '<STRONG>Уж время обеда</STRONG>';
-                    message = 'am'
-                }
-                if (hours >= 17) {
-                    message_t = '<STRONG>Доброго вам вечера</STRONG>';
-                    message = 'em';
-                }
-                if ((hours >= 0) && (hours < 6)) {
-                    message_t = '<STRONG>Пусть ночь для вас будет приятной</STRONG>';
-                    message = 'nm';
-                }
-                document.write('<STRONG>Хочется сказать вам по простому, </STRONG>' + message_t + '');
-            }     
-            function display_date(){
-                date = new Date();
-            }
-        </script>
-		{% block script %}
+     	{% block script %}
 		{% endblock %}
         <title>ФГУП «Западно-Сибирское аэрогеодезическое предприятие»</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
@@ -58,7 +32,7 @@
                         <img width="16" height="16" src="{{ MEDIA_URL }}images/l_ugol_b.gif"/>
                     </td>
                     <td bgcolor="#f2efe9" align="left" valign="top" height="706">
-                        <table cellspacing="0" cellpadding="0" border="0" background="{{ MEDIA_URL }}images/header.gif" width="100%">
+                        <table cellspacing="0" cellpadding="0" border="0" background="{{ MEDIA_URL }}images/header.gif" width="100%" style="background-repeat:no-repeat;">
                             <tbody>
                                 <tr align="left" valign="top">
                                     <td align="right" width="48%" height="149">
@@ -116,7 +90,7 @@
                             <tbody>
                                 <tr>
                                     <td align="left" width="23%" valign="middle" height="36">
-                                        <table cellspacing="0" cellpadding="0" border="5" bgcolor="#262780" width="175">
+                                        <table cellspacing="0" cellpadding="0" border="0" bgcolor="#262780" width="175">
                                             <tbody>
                                                 <tr align="center" valign="bottom">
                                                     <td width="19%" height="30">
@@ -137,7 +111,7 @@
                                     </td>
                                     <td width="20%">
                                         <script src="http://www.24log.ru/clock/clock24.js" language="JavaScript"/></script>
-                                        <table cellspacing="1" cellpadding="3" border="5" bgcolor="#262780" style="padding: 0pt; line-height: 12px; font-family: arial; font-size: 12px;" class="clock24st">
+                                        <table cellspacing="1" cellpadding="3" border="0" bgcolor="#262780" style="padding: 0pt; line-height: 12px; font-family: arial; font-size: 12px;" class="clock24st">
                                             <tbody>
                                                 <tr>
                                                     <td bgcolor="#262780" class="clock24std">
@@ -161,7 +135,7 @@
                             <tbody>
                                 <tr align="left" valign="top">
                                     <td width="3%" height="423">
-                                        <table cellspacing="0" cellpadding="5" border="5" width="97%">
+                                        <table cellspacing="0" cellpadding="0" border="0" width="97%">
                                             <tbody>
                                                 <tr>
                                                     <td align="left" valign="top" class="text">
