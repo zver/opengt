@@ -9,6 +9,8 @@ Group: Monitoring
 Url: http://spo.tyumen.ru
 Source: %name-%version.tar
 
+%setup_python_module django-opengt
+
 %description
 Open geo tracker django modules and daemon for receive, 
 parse and save data from trackers.
@@ -42,6 +44,7 @@ AGP web site with opengt system
 %setup
 
 %build
+%python_build
 
 %install
 %python_install
