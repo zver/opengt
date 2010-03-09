@@ -7,6 +7,7 @@ License: GPLv3
 Group: Monitoring
 
 Url: http://spo.tyumen.ru
+BuildArch: noarch
 Source: %name-%version.tar
 
 %setup_python_module django-opengt
