@@ -23,8 +23,10 @@ function init() {
 		displayProjection : new OpenLayers.Projection("EPSG:4326")
 	});
 	var layerMapnik = new OpenLayers.Layer.OSM.Mapnik("ОСМ");
-
-	map.addLayers([layerMapnik]);
+	var gsat = new OpenLayers.Layer.Google("Google Satellite",
+		{type: G_SATELLITE_MAP, 'sphericalMercator': true, numZoomLevels: 22}
+	);
+	map.addLayers([layerMapnik, gsat]);
 
 //	Tyumen
 	set_map_to(65.54, 57.13);
