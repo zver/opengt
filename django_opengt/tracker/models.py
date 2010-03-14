@@ -12,19 +12,25 @@ PROTOCOLS = (
 class Model(models.Model):
 	name = models.CharField(_('Name'), max_length=60, help_text=_('Example: TR-102'))
 	protocol = models.SlugField(_('Protocol'), choices=PROTOCOLS)
+
 	class Meta:
 		verbose_name = _('Tracker model')
 		verbose_name_plural = _('Tracker models')
+
 	def __unicode__(self):
 		return u'%s (%s)' % (self.name, self.protocol)
 
+
 class Type(models.Model):
 	name = models.CharField(_('Name'), max_length=60, help_text=_('Example: car, velo'))
+
 	class Meta:
 		verbose_name = _('Tracker type')
 		verbose_name_plural = _('Tracker types')
+
 	def __unicode__(self):
 		return self.name
+
 
 class Tracker(models.Model):
 	IMEI = models.CharField(u'IMEI', max_length=60, unique=True)
@@ -40,14 +46,17 @@ class Tracker(models.Model):
 	class Meta:
 		verbose_name = _('Tracker')
 		verbose_name_plural = _('Trackers')
+
 	def __unicode__(self):
 		return u'%s (IMEI: %s, %s)' % (self.model, self.IMEI, self.type)
+
 	@property
 	def last_position(self):
 		qs = self.positions.all()
 		if qs.count():
 			return qs.order_by('-date')[0]
 		return None
+
 	def get_stats(self, start_date=None, end_date=None):
 		link_time = 0
 		move_time = 0
@@ -102,8 +111,10 @@ class Position(models.Model):
 	point = models.PointField(_('Point'))
 	speed = models.FloatField(_('Speed'), help_text=_('Speed in km/h'), blank=True, null=True)
 	objects = models.GeoManager()
+
 	def __unicode__(self):
 		return u'%s %s' % (self.date, self.tracker)
+
 	class Meta:
 		verbose_name = _('Position')
 		verbose_name_plural = _('Positions')
