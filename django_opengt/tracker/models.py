@@ -2,6 +2,8 @@ from django.contrib.gis.db import models
 from django.contrib.auth.models import User, Group
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 
 from django_opengt.tracker.fields import ColorField
 
@@ -107,9 +109,15 @@ class Tracker(models.Model):
 
 class Position(models.Model):
 	date = models.DateTimeField(_('Date'), auto_now_add=True)
-	tracker = models.ForeignKey(Tracker, verbose_name=_('Tracker'), related_name='positions')
+	tracker = models.ForeignKey(Tracker, verbose_name=_('Tracker'), related_name='positions', blank=True, null=True)
 	point = models.PointField(_('Point'))
 	speed = models.FloatField(_('Speed'), help_text=_('Speed in km/h'), blank=True, null=True)
+
+	# Tracking object
+	tracking_content_type = models.ForeignKey(ContentType, blank=True, null=True)
+	tracking_object_id = models.PositiveIntegerField(db_index=True, blank=True, null=True)
+	tracking_object = generic.GenericForeignKey('tracking_content_type', 'tracking_object_id')
+
 	objects = models.GeoManager()
 
 	def __unicode__(self):

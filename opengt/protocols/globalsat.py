@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class GlobalsatReport(BaseReport):
-	def __init__(self, report_data):
+	def __init__(self, report_data, callback=None):
 		regex = r'^\$(?P<IMEI>\d+),(?P<status>\d+),(?P<GPS_fix>\d+),(?P<date>\d+),(?P<time>\d+),(?P<longitude>[EW0-9.]+),(?P<latitude>[NS0-9.]+),(?P<altitude>[0-9.]+),(?P<speed>[0-9.]+),(?P<heading>[0-9.]+),(?P<satelites_count>\d+)\*\d+!.*$'
 		import re
 		m = re.compile(regex).match(str(report_data))
@@ -46,7 +46,7 @@ class GlobalsatRequestHandler(BaseRequestHandler):
 				logger.debug(u'not printable data')
 
 			if not data: break
-			gr = GlobalsatReport(str(data))
+			gr = GlobalsatReport(str(data), callback=self.report_callback)
 			if gr.is_valid:
 				gr.save()
 
