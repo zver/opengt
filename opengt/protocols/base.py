@@ -13,13 +13,14 @@ class BaseReport:
 	speed = None # in km/h
 	satelites_count = None # Number of satelites in use
 
+	callback = None
+
 	def __init__(self, report_data, callback=None):
 		if isinstance(callback, basestring):
 			self.callback = __import__(self.callback, globals(), locals(), [''])
 		elif callable(callback):
 			self.callback = callback
-		else:
-			self.callback = None
+		elif callback:
 			logger.warn('Wrong callback type. It must be string or callable object.')
 
 	@property

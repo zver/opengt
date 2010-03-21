@@ -6,6 +6,7 @@ logger = logging.getLogger(__name__)
 
 class GlobalsatReport(BaseReport):
 	def __init__(self, report_data, callback=None):
+		super(GlobalsatReport, self).__init__(report_data, callback=None)
 		regex = r'^\$(?P<IMEI>\d+),(?P<status>\d+),(?P<GPS_fix>\d+),(?P<date>\d+),(?P<time>\d+),(?P<longitude>[EW0-9.]+),(?P<latitude>[NS0-9.]+),(?P<altitude>-?[0-9.]+),(?P<speed>[0-9.]+),(?P<heading>[0-9.]+),(?P<satelites_count>\d+)\*\d+!.*$'
 		import re
 		m = re.compile(regex).match(str(report_data))
