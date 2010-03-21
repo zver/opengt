@@ -4,7 +4,7 @@ logger = logging.getLogger(__name__)
 from django_opengt.tracker.models import Tracker, Position
 
 
-class BaseReport:
+class BaseReport(object):
 	IMEI = None
 	GPS_fix = None # None, '2D', '3D'
 	longitude = None # E1234.1234
