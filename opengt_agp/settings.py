@@ -12,7 +12,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'opengt'             # Or path to database file if using sqlite3.
+DATABASE_NAME = 'agp'             # Or path to database file if using sqlite3.
 DATABASE_USER = 'postgres'             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
@@ -27,7 +27,7 @@ TIME_ZONE = 'Asia/Yekaterinburg'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'ru-RU'
+LANGUAGE_CODE = 'ru'
 
 SITE_ID = 1
 
@@ -63,6 +63,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+	'cms.middleware.page.CurrentPageMiddleware',
+	'cms.middleware.user.CurrentUserMiddleware',
+	'cms.middleware.multilingual.MultilingualURLMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -75,14 +79,50 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-#    'django.contrib.sites',
+    'django.contrib.sites',
 	'django.contrib.admindocs',
 	'django.contrib.admin',
 	'agp',
 	'django_opengt.tracker',
+
+	#CMS
+	'cms',
+	'cms.plugins.text',
+	'cms.plugins.picture',
+	'cms.plugins.link',
+	'cms.plugins.file',
+	'cms.plugins.snippet',
+	'cms.plugins.googlemap',
+	'mptt',
+	'publisher',
+
 )
 
 LOGIN_URL = '/login/'
 
 STAY_AVG_SPEED = 2 # in km/h
 MIN_LINK_TIMEOUT = 300 # in seconds
+
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+        "django.core.context_processors.auth",
+        "django.core.context_processors.i18n",
+        "django.core.context_processors.request",
+        "django.core.context_processors.media",
+        "cms.context_processors.media",
+)
+
+gettext = lambda s: s
+
+
+CMS_TEMPLATES = (
+        ('base.html', gettext('default')),
+        ('2col.html', gettext('2 Column')),
+        ('3col.html', gettext('3 Column')),
+        ('extra.html', gettext('Some extra fancy template')),
+)
+
+LANGUAGES = (
+        ('en', gettext('English')),
+        ('ru', gettext('Russian')),
+)
