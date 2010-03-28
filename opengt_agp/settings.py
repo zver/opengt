@@ -124,6 +124,5 @@ CMS_TEMPLATES = (
 )
 
 LANGUAGES = (
-        ('en', gettext('English')),
         ('ru', gettext('Russian')),
 )
