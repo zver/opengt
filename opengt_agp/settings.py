@@ -60,13 +60,14 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
+ #   'django.middleware.common.CommonMiddleware',
+	'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 
 	'cms.middleware.page.CurrentPageMiddleware',
 	'cms.middleware.user.CurrentUserMiddleware',
-	'cms.middleware.multilingual.MultilingualURLMiddleware',
+#	'cms.middleware.multilingual.MultilingualURLMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -96,6 +97,8 @@ INSTALLED_APPS = (
 	'mptt',
 	'publisher',
 
+	'reversion',
+
 )
 
 LOGIN_URL = '/login/'
@@ -116,10 +119,8 @@ gettext = lambda s: s
 
 
 CMS_TEMPLATES = (
-        ('base.html', gettext('default')),
         ('2col.html', gettext('2 Column')),
         ('3col.html', gettext('3 Column')),
-        ('extra.html', gettext('Some extra fancy template')),
 )
 
 LANGUAGES = (
