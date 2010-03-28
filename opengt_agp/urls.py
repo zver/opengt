@@ -16,3 +16,8 @@ if settings.DEBUG:
 	urlpatterns += patterns('',
 		(r'm/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes':True}),
 	)
+
+
+urlpatterns += patterns('',
+	url(r'^', include('cms.urls')),
+)
