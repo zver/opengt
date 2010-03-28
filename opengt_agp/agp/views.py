@@ -16,7 +16,7 @@ def index(request):
 @login_required
 def map(request):
 	trackers = Tracker.objects.filter(creator=request.user)
-	return render_to_response('agp/map.html', {
+	return render_to_response('map.html', {
 					'trackers':	trackers,
 			}, RequestContext(request))
 
@@ -37,7 +37,7 @@ def statistics(request):
 	for tr in trackers:
 		tr.stats = tr.get_stats(start_date, end_date)
 
-	return render_to_response('agp/statistics.html', {
+	return render_to_response('statistics.html', {
 					'trackers': trackers,
 					'form':	form,
 			}, RequestContext(request))
@@ -56,7 +56,7 @@ def login(request):
 	else:
 		form = AuthenticationForm()
 
-	return render_to_response('agp/login.html', {
+	return render_to_response('login.html', {
 													'form': form,
 													'next': next,
 												}, RequestContext(request))
@@ -82,7 +82,7 @@ def registration(request):
 	else:
 		form = RegistrationForm()
 
-	return render_to_response('agp/registration.html', {'form': form}, RequestContext(request))
+	return render_to_response('registration.html', {'form': form}, RequestContext(request))
 
 @login_required
 def trackers(request):
@@ -95,7 +95,7 @@ def trackers(request):
 	else:
 		form = TrackerForm(creator=request.user)
 
-	return render_to_response('agp/trackers.html', {	'trackers': trackers,
+	return render_to_response('trackers.html', {	'trackers': trackers,
 														'form':		form
 													}, RequestContext(request))
 
@@ -118,7 +118,7 @@ def edit_tracker(request, tracker_id):
 			form.save()
 			return HttpResponseRedirect(reverse('trackers'))
 	form = TrackerForm(instance=tracker, creator=request.user)
-	return render_to_response('agp/edit_tracker.html', {
+	return render_to_response('edit_tracker.html', {
 										'tracker'	: tracker,
 										'form'		: form,
 										}, RequestContext(request))
