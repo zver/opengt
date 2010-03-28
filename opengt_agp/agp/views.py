@@ -10,9 +10,6 @@ from django_opengt.tracker.models import Tracker
 from django_opengt.tracker.forms import TrackerForm
 
 
-def index(request):
-	return HttpResponseRedirect(reverse('trackers'))
-
 @login_required
 def map(request):
 	trackers = Tracker.objects.filter(creator=request.user)
