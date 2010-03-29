@@ -9,3 +9,12 @@
 	color: #353433;
 }
 H1 {font-family:Arial; font-size:17px; color:#262780;font-weight:bold}
+
+li {
+	list-style-type: none;
+	margin-left: 5px;
+}
+li a {
+	margin-bottom: 6px;
+	display: block;
+}

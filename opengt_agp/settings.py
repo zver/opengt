@@ -1,4 +1,5 @@
-# Django settings for opengt project.
+# vim: set fileencoding=utf-8 :
+#Django settings for opengt project.
 import os
 
 DEBUG = True
@@ -119,9 +120,14 @@ gettext = lambda s: s
 
 
 CMS_TEMPLATES = (
-        ('2col.html', gettext('2 Column')),
-        ('3col.html', gettext('3 Column')),
-)
+        ('main_content.html', gettext('Контент')),
+	('login.html', gettext('Авторизация')),
+	('map.html', gettext('Карта')),
+	('registration.html', gettext('Регистрация')),
+	('statistics.html', gettext('Статистика')),
+	('trackers.html', gettext('Трекеры')),
+	('edit_tracker.html', gettext('Редактор трекеров')),
+	)
 
 LANGUAGES = (
         ('ru', gettext('Russian')),

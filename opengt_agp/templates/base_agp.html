@@ -1,7 +1,7 @@
 <html>
     <head>
      	{% block script %}
-	{% endblock %}
+		{% endblock %}
         <title>ФГУП «Западно-Сибирское аэрогеодезическое предприятие»</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
         <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/style.css"/>
@@ -17,7 +17,7 @@
             //
             -->
         </script>
-        <table cellspacing="0" cellpadding="0" border="0" align="center" width="900px">
+        <table cellspacing="0" cellpadding="0" border="0" align="center" width="90%">
             <tbody>
                 <tr>
                     <td background="{{ MEDIA_URL }}images/top_bg.gif" align="left" valign="top" height="16" colspan="2">
@@ -140,17 +140,9 @@
                                                 <tr>
                                                     <td align="left" valign="top" class="text">
                                                         <table cellspacing="5" cellpadding="0" border="0" width="100%">
-								<tbody>
-									<tr>
-										{% load cms_tags %}
-
-										<td class="text">
-											        <strong>
-													                {% show_menu 0 100 100 100 %}
-															        </strong>
-															</td>
-									</tr>
-                                                            	</tbody>
+                                                            <tbody>
+                                                                                   {% include left_menu.html %}
+                                                            </tbody>
                                                         </table>
                                                     </td>
                                                 </tr>
