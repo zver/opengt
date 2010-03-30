@@ -8,6 +8,11 @@
 	font-size: 75%;
 	color: #353433;
 }
+ul {
+	list-style-position: inside;
+	margin-left: 0;
+	padding-left: 0;
+}
 p {
 	font-family: Verdana,Tahoma, Arial;
 	font-size: 100%;
