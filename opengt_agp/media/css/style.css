@@ -4,7 +4,7 @@
 	color: #353433;
 }
 .text2 {
-	font-family: Verdana,Tahoma, Arial;
+	font-family: Tahoma, Arial;
 	font-size: 75%;
 	color: #353433;
 }
@@ -15,8 +15,8 @@
 ul ul {
 	font-weight: normal;
 }
-p {
-	font-family: Verdana,Tahoma, Arial;
+.content {
+	font-family: Arial;
 	font-size: 100%;
 	color: #353433;
 }
@@ -25,6 +25,8 @@ H1 {font-family:Arial; font-size:17px; color:#262780;font-weight:bold}
 
 
 .text li {
+	font-family: Tahoma, Arial;
+	color: #353433;
 	list-style-type: none;
 	margin-left: 5px;
 }
