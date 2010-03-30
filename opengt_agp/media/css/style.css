@@ -20,6 +20,12 @@ ul ul {
 	font-size: 100%;
 	color: #353433;
 }
+.selected a {
+	color: #000099;
+}
+.descendant a {
+	color: #353433
+}
 H1 {font-family:Arial; font-size:17px; color:#262780;font-weight:bold}
 
 
