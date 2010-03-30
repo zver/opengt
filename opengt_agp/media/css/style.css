@@ -12,23 +12,26 @@
 	margin-left: 0;
 	padding-left: 0;
 }
-ul ul {
+
+ul ul a {
 	font-weight: normal;
 }
+
 .content {
 	font-family: Arial;
 	font-size: 100%;
 	color: #353433;
 }
+
 .selected a {
 	color: #000099;
 }
+
 .descendant a {
 	color: #353433
 }
+
 H1 {font-family:Arial; font-size:17px; color:#262780;font-weight:bold}
-
-
 
 .text li {
 	font-family: Tahoma, Arial;
@@ -36,6 +39,7 @@ H1 {font-family:Arial; font-size:17px; color:#262780;font-weight:bold}
 	list-style-type: none;
 	margin-left: 5px;
 }
+
 li strong a {
 	margin-bottom: 6px;
 	display: block;
