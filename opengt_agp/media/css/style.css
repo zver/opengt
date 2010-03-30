@@ -8,7 +8,7 @@
 	font-size: 75%;
 	color: #353433;
 }
-ul {
+.text ul {
 	margin-left: 0;
 	padding-left: 0;
 }
@@ -22,11 +22,13 @@ p {
 }
 H1 {font-family:Arial; font-size:17px; color:#262780;font-weight:bold}
 
-li {
+
+
+.text li {
 	list-style-type: none;
 	margin-left: 5px;
 }
-li a {
+li strong a {
 	margin-bottom: 6px;
 	display: block;
 }
