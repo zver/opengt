@@ -13,6 +13,9 @@ ul {
 	margin-left: 0;
 	padding-left: 0;
 }
+ul ul {
+	font-weight: normal;
+}
 p {
 	font-family: Verdana,Tahoma, Arial;
 	font-size: 100%;
