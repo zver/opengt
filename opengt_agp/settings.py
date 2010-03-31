@@ -97,6 +97,7 @@ INSTALLED_APPS = (
 	'cms.plugins.googlemap',
 	'mptt',
 	'publisher',
+	'tinymce',
 
 	'reversion',
 
