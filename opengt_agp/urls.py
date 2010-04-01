@@ -6,10 +6,13 @@ admin.autodiscover()
 from agp.views import *
 
 urlpatterns = patterns('',
+	(r'^admin/filebrowser/', include('filebrowser.urls')),
 	(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 	(r'^admin/', include(admin.site.urls)),
 	(r'^', include('agp.urls')),
 	(r'^trackers/', include('django_opengt.tracker.urls')),
+	(r'^tinymce/', include('tinymce.urls')),
+
 )
 
 if settings.DEBUG:

@@ -98,10 +98,12 @@ INSTALLED_APPS = (
 	'mptt',
 	'publisher',
 	'tinymce',
-
 	'reversion',
-
+	'filebrowser',
 )
+
+FILEBROWSER_URL_WWW = MEDIA_URL + 'uploads/'
+FILEBROWSER_URL_FILEBROWSER_MEDIA = MEDIA_URL + 'filebrowser/'
 
 LOGIN_URL = '/login/'
 
