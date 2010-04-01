@@ -1,18 +1,13 @@
 # coding: utf-8
 
-# imports
-import os, re, decimal
-from time import gmtime, strftime, localtime, mktime, time
-from urlparse import urlparse
-
-# django imports
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
+from time import gmtime, strftime, localtime, mktime, time
 from django.core.files import File
-from django.core.files.storage import default_storage
+import os, re, decimal
 
-# filebrowser imports
-from filebrowser.settings import *
+# get settings
+from filebrowser.fb_settings import *
 
 # PIL import
 if STRICT_PIL:
@@ -24,161 +19,139 @@ else:
         import Image
 
 
-def url_to_path(value):
-    """
-    Change URL to PATH.
-    Value has to be an URL relative to MEDIA URL or a full URL (including MEDIA_URL).
-    
-    Returns a PATH relative to MEDIA_ROOT.
-    """
-    
-    mediaurl_re = re.compile(r'^(%s)' % (MEDIA_URL))
-    value = mediaurl_re.sub('', value)
-    return value
-
-
-def path_to_url(value):
-    """
-    Change PATH to URL.
-    Value has to be a PATH relative to MEDIA_ROOT.
-    
-    Return an URL relative to MEDIA_ROOT.
-    """
-    
-    mediaroot_re = re.compile(r'^(%s)' % (MEDIA_ROOT))
-    value = mediaroot_re.sub('', value)
-    return url_join(MEDIA_URL, value)
-
-
-def dir_from_url(value):
-    """
-    Get the relative server directory from a URL.
-    URL has to be an absolute URL including MEDIA_URL or
-    an URL relative to MEDIA_URL.
-    """
-    
-    mediaurl_re = re.compile(r'^(%s)' % (MEDIA_URL))
-    value = mediaurl_re.sub('', value)
-    directory_re = re.compile(r'^(%s)' % (DIRECTORY))
-    value = directory_re.sub('', value)
-    return os.path.split(value)[0]
-
-
-def get_version_path(value, version_prefix):
-    """
-    Construct the PATH to an Image version.
-    Value has to be server-path, relative to MEDIA_ROOT.
-    
-    version_filename = filename + version_prefix + ext
-    Returns a path relative to MEDIA_ROOT.
-    """
-    
-    if os.path.isfile(os.path.join(MEDIA_ROOT, value)):
-        path, filename = os.path.split(value)
-        filename, ext = os.path.splitext(filename)
-        
-        # check if this file is a version of an other file
-        # to return filename_<version>.ext instead of filename_<version>_<version>.ext
-        tmp = filename.split("_")
-        if tmp[len(tmp)-1] in ADMIN_VERSIONS:
-            # it seems like the "original" is actually a version of an other original
-            # so we strip the suffix (aka. version_perfix)
-            new_filename = filename.replace("_" + tmp[len(tmp)-1], "")
-            # check if the version exists when we use the new_filename
-            if os.path.isfile(os.path.join(MEDIA_ROOT, path, new_filename + "_" + version_prefix + ext)):
-                # our "original" filename seem to be filename_<version> construct
-                # so we replace it with the new_filename
-                filename = new_filename
-                # if a VERSIONS_BASEDIR is set we need to strip it from the path
-                # or we get a <VERSIONS_BASEDIR>/<VERSIONS_BASEDIR>/... construct
-                if VERSIONS_BASEDIR != "":
-                        path = path.replace(VERSIONS_BASEDIR + "/", "")
-        
-        version_filename = filename + "_" + version_prefix + ext
-        return os.path.join(VERSIONS_BASEDIR, path, version_filename)
-    else:
-        return None
-
-
-def sort_by_attr(seq, attr):
-    """
-    Sort the sequence of objects by object's attribute
-    
-    Arguments:
-    seq  - the list or any sequence (including immutable one) of objects to sort.
-    attr - the name of attribute to sort by
-    
-    Returns:
-    the sorted list of objects.
-    """
-    import operator
-    
-    # Use the "Schwartzian transform"
-    # Create the auxiliary list of tuples where every i-th tuple has form
-    # (seq[i].attr, i, seq[i]) and sort it. The second item of tuple is needed not
-    # only to provide stable sorting, but mainly to eliminate comparison of objects
-    # (which can be expensive or prohibited) in case of equal attribute values.
-    intermed = map(None, map(getattr, seq, (attr,)*len(seq)), xrange(len(seq)), seq)
-    intermed.sort()
-    return map(operator.getitem, intermed, (-1,) * len(intermed))
-
-
-def url_join(*args):
-    """
-    URL join routine.
-    """
-    
-    if args[0].startswith("http://"):
-        url = "http://"
-    else:
-        url = "/"
+def _url_join(*args):
+    url = "/"
     for arg in args:
-        arg = unicode(arg).replace("\\", "/")
         arg_split = arg.split("/")
         for elem in arg_split:
-            if elem != "" and elem != "http:":
+            if elem != "":
                 url = url + elem + "/"
-    # remove trailing slash for filenames
-    if os.path.splitext(args[-1])[1]:
-        url = url.rstrip("/")
     return url
+    
 
-
-def get_path(path):
+def _get_path(dir_name):
     """
-    Get Path.
+    Get path.
     """
     
-    if path.startswith('.') or os.path.isabs(path) or not os.path.isdir(os.path.join(MEDIA_ROOT, DIRECTORY, path)):
-        return None
+    if dir_name:
+        path = dir_name + "/"
+    else:
+        path = ""
     return path
+    
 
-
-def get_file(path, filename):
+def _get_subdir_list(dir_name):
     """
-    Get File.
+    Get a list of subdirectories.
     """
     
-    if not os.path.isfile(os.path.join(MEDIA_ROOT, DIRECTORY, path, filename)) and not os.path.isdir(os.path.join(MEDIA_ROOT, DIRECTORY, path, filename)):
-        return None
-    return filename
+    subdir_list = []
+    if dir_name:
+        dirlink = ''
+        dir_items = dir_name.split('/')
+        dir_items.pop()
+        for dirname in dir_items:
+            dirlink = dirlink + dirname + '/'
+            subdir_list.append([dirname,dirlink])
+    return subdir_list
+    
 
+def _get_dir_list(dir_name):
+    """
+    Get a list of directories.
+    """
+    
+    dir_list = []
+    if dir_name:
+        dir_items = dir_name.split('/')
+        dirname = dir_items.pop()
+        dir_list.append(dirname)
+        dir_list.append(dir_name)
+    return dir_list
+    
 
-def get_breadcrumbs(query, path):
+def _get_breadcrumbs(query, dir_name, page):
     """
     Get breadcrumbs.
     """
     
-    breadcrumbs = []
-    dir_query = ""
-    if path:
-        for item in path.split(os.sep):
-            dir_query = os.path.join(dir_query,item)
-            breadcrumbs.append([item,dir_query])
-    return breadcrumbs
+    subdir_list = _get_subdir_list(dir_name)
+    dir_list = _get_dir_list(dir_name)
+    
+    breadcrumbs = ""
+    if not query['pop']:
+        breadcrumbs = '<a href="%s">%s</a>&nbsp;&rsaquo;&nbsp;' % (URL_HOME,_('Home'))
+    breadcrumbs = breadcrumbs + '<a href="%s%s">%s</a>' % (URL_ADMIN, query['query_str_total'], 'FileBrowser')
+    if subdir_list:
+        for item in subdir_list:
+            breadcrumbs = breadcrumbs + '&nbsp;&rsaquo;&nbsp;<a href="%s%s%s">%s</a>' % (URL_ADMIN, item[1], query['query_str_total'], item[0])
+    if page:
+        if dir_list:
+            breadcrumbs = breadcrumbs + '&nbsp;&rsaquo;&nbsp;<a href="%s%s/%s">%s</a>&nbsp;&rsaquo;&nbsp;%s' % (URL_ADMIN, dir_list[1], query['query_str_total'], dir_list[0], _(page))
+        else:
+            breadcrumbs = breadcrumbs + '&nbsp;&rsaquo;&nbsp;%s' % (_(page))
+    elif dir_list:
+        breadcrumbs = breadcrumbs + '&nbsp;&rsaquo;&nbsp;%s' % (dir_list[0])
+    return mark_safe(breadcrumbs)
+    
 
+def _get_sub_query(items, var_1, var_2, var_3):
+    """
+    Get subquery.
+    """
+    
+    querystring= ''
+    for k,v in items:
+        if k != var_1 and k != var_2 and k != var_3:
+            querystring = querystring + "&" + k + "=" + v
+    return querystring
+    
 
-def get_filterdate(filterDate, dateTime):
+def _get_query(request_var):
+    """
+    Construct query.
+    """
+    
+    query = {}
+    if request_var:
+        query['query_str_total'] = "?"
+        for k,v in request_var.items():
+            if k in ['o', 'ot', 'q', 'filter_date', 'filter_type', 'pop', 'mce_rdomain']:
+                query['query_str_total'] = query['query_str_total'] + "&" + k + "=" + v
+        #query['query_str_total'] = "?" + "&".join(["%s=%s" % (k, v) for k, v in request_var.items()])
+        query['query_nofilterdate'] = _get_sub_query(request_var.items(), 'filter_date', '', '')
+        query['query_nofiltertype'] = _get_sub_query(request_var.items(), 'filter_type', '', '')
+        query['query_nosearch'] = _get_sub_query(request_var.items(), 'q', '', '')
+        query['query_nosort'] = _get_sub_query(request_var.items(), 'o', 'ot', '')
+        query['query_nodelete'] = "?" + _get_sub_query(request_var.items(), 'filename', 'type', '')
+        if request_var.get('pop'):
+            query['pop'] = "pop=" + request_var.get('pop')
+            query['pop_toolbar'] = request_var.get('pop')
+            if query['pop'] == 'pop=2' and 'mce_rdomain' in request_var:
+                query['mce_rdomain'] = request_var['mce_rdomain']
+                query['pop'] = "%s&mce_rdomain=%s" % (query['pop'], request_var['mce_rdomain'])
+        else:
+            query['pop'] = ''
+            query['pop_toolbar'] = ""
+    else:
+        query['query_str_total'] = "?"
+        query['query_nodelete'] = ""
+        query['pop'] = ""
+        query['pop_toolbar'] = ""
+    query['ot'] = request_var.get('ot', 'desc')
+    query['o'] = request_var.get('o', '3')
+    query['filter_type'] = request_var.get('filter_type', '')
+    query['q'] = request_var.get('q', '')
+    query['filter_date'] = request_var.get('filter_date', '')
+    if query['ot'] == 'asc':
+        query['ot_new'] = 'desc'
+    elif query['ot'] == 'desc':
+        query['ot_new'] = 'asc'
+    return query
+    
+
+def _get_filterdate(filterDate, dateTime):
     """
     Get filterdate.
     """
@@ -191,53 +164,92 @@ def get_filterdate(filterDate, dateTime):
     elif filterDate == 'thismonth' and dateTime >= time()-2592000: returnvalue = 'true'
     elif filterDate == 'thisyear' and int(dateYear) == int(localtime()[0]): returnvalue = 'true'
     elif filterDate == 'past7days' and dateTime >= time()-604800: returnvalue = 'true'
-    elif filterDate == '': returnvalue = 'true'
     return returnvalue
+    
 
-
-def get_settings_var():
+def _get_filesize(filesize_long):
     """
-    Get settings variables used for FileBrowser listing.
+    Get filesize in a readable format.
+    """
+    
+    filesize_str = ''
+    if filesize_long < 1000:
+        filesize_str = str(filesize_long) + "&nbsp;B"
+    elif filesize_long >= 1000 and filesize_long < 1000000:
+        filesize_str = str(filesize_long/1000) + "&nbsp;kB"
+    elif filesize_long >= 1000000:
+        filesize_str = str(filesize_long/1000000) + "&nbsp;MB"
+    return mark_safe(filesize_str)
+    
+
+def _make_filedict(file_list):
+    """
+    Make a dict out of the file_list.
+        This is for better readability in the templates.
+    """
+    
+    file_dict = []
+    for item in file_list:
+        temp_list = {}
+        temp_list['filename'] = item[0]
+        temp_list['filesize_long'] = item[1]
+        temp_list['filesize_str'] = item[2]
+        temp_list['date'] = item[3]
+        temp_list['path_thumb'] = item[4]
+        temp_list['link'] = item[5]
+        temp_list['select_link'] = item[6]
+        temp_list['save_path'] = item[7]
+        temp_list['file_extension'] = item[8]
+        temp_list['file_type'] = item[9]
+        temp_list['image_dimensions'] = item[10]
+        temp_list['thumb_dimensions'] = item[11]
+        temp_list['filename_lower'] = item[12]
+        temp_list['flag_makethumb'] = item[13]
+        temp_list['flag_deletedir'] = item[14]
+        temp_list['flag_imageversion'] = item[15]
+        file_dict.append(temp_list)
+    return file_dict
+    
+
+def _get_settings_var(http_post, path):
+    """
+    Get all settings variables.
     """
     
     settings_var = {}
-    # Main
-    settings_var['DEBUG'] = DEBUG
-    settings_var['MEDIA_ROOT'] = MEDIA_ROOT
-    settings_var['MEDIA_URL'] = MEDIA_URL
-    settings_var['DIRECTORY'] = DIRECTORY
-    # FileBrowser
+    settings_var['URL_WWW'] = URL_WWW
+    settings_var['URL_ADMIN'] = URL_ADMIN
+    settings_var['URL_HOME'] = URL_HOME
     settings_var['URL_FILEBROWSER_MEDIA'] = URL_FILEBROWSER_MEDIA
-    settings_var['PATH_FILEBROWSER_MEDIA'] = PATH_FILEBROWSER_MEDIA
-    # TinyMCE
     settings_var['URL_TINYMCE'] = URL_TINYMCE
+    settings_var['PATH_SERVER'] = PATH_SERVER
+    #settings_var['PATH_FILEBROWSER_MEDIA'] = PATH_FILEBROWSER_MEDIA
     settings_var['PATH_TINYMCE'] = PATH_TINYMCE
-    # Extensions/Formats (for FileBrowseField)
     settings_var['EXTENSIONS'] = EXTENSIONS
-    settings_var['SELECT_FORMATS'] = SELECT_FORMATS
-    # Versions
-    settings_var['VERSIONS_BASEDIR'] = VERSIONS_BASEDIR
-    settings_var['VERSIONS'] = VERSIONS
-    settings_var['ADMIN_VERSIONS'] = ADMIN_VERSIONS
-    settings_var['ADMIN_THUMBNAIL'] = ADMIN_THUMBNAIL
-    # FileBrowser Options
-    settings_var['MAX_UPLOAD_SIZE'] = MAX_UPLOAD_SIZE
-    # Convert Filenames
-    settings_var['CONVERT_FILENAME'] = CONVERT_FILENAME
+    settings_var['MAX_UPLOAD_SIZE'] = _get_filesize(MAX_UPLOAD_SIZE)
+    settings_var['IMAGE_MAXBLOCK'] = IMAGE_MAXBLOCK
+    settings_var['THUMB_PREFIX'] = THUMB_PREFIX
+    settings_var['THUMBNAIL_SIZE'] = THUMBNAIL_SIZE
+    settings_var['USE_IMAGE_GENERATOR'] = USE_IMAGE_GENERATOR
+    settings_var['IMAGE_GENERATOR_DIRECTORY'] = IMAGE_GENERATOR_DIRECTORY
+    settings_var['IMAGE_GENERATOR_LANDSCAPE'] = IMAGE_GENERATOR_LANDSCAPE
+    settings_var['IMAGE_GENERATOR_PORTRAIT'] = IMAGE_GENERATOR_PORTRAIT
+    settings_var['FORCE_GENERATOR'] = FORCE_GENERATOR
     return settings_var
-
-
-def handle_file_upload(path, file):
+    
+    
+def _handle_file_upload(PATH_SERVER, path, file):
     """
     Handle File Upload.
     """
     
-    file_path = os.path.join(path, file.name)
-    uploadedfile = default_storage.save(file_path, file)
-    return uploadedfile
+    file_path = os.path.join(PATH_SERVER, path, file.name)
+    destination = open(file_path, 'wb+')
+    for chunk in file.chunks():
+        destination.write(chunk)
+    
 
-
-def get_file_type(filename):
+def _get_file_type(filename):
     """
     Get file type as defined in EXTENSIONS.
     """
@@ -249,26 +261,28 @@ def get_file_type(filename):
             if file_extension == extension.lower():
                 file_type = k
     return file_type
-
-
-def is_selectable(filename, selecttype):
-    """
-    Get select type as defined in FORMATS.
-    """
     
-    file_extension = os.path.splitext(filename)[1].lower()
-    select_types = []
-    for k,v in SELECT_FORMATS.iteritems():
-        for extension in v:
-            if file_extension == extension.lower():
-                select_types.append(k)
-    return select_types
 
-
-def version_generator(value, version_prefix, force=None):
+def _make_image_thumbnail(PATH_SERVER, path, filename):
     """
-    Generate Version for an Image.
-    value has to be a serverpath relative to MEDIA_ROOT.
+    Make Thumbnail for an Image.
+    """
+        
+    file_path = os.path.join(PATH_SERVER, path, filename)
+    thumb_path = os.path.join(PATH_SERVER, path, THUMB_PREFIX + filename)
+    msg = ""
+    try:
+        im = Image.open(file_path)
+        im.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
+        im.save(thumb_path)
+    except IOError:
+        msg = "%s: %s" % (file.name, _('Thumbnail creation failed.'))
+    return msg
+    
+
+def _image_generator(PATH_SERVER, path, filename):
+    """
+    Generate Versions for an Image.
     """
     
     # PIL's Error "Suspension not allowed here" work around:
@@ -282,38 +296,48 @@ def version_generator(value, version_prefix, force=None):
             import ImageFile
     ImageFile.MAXBLOCK = IMAGE_MAXBLOCK # default is 64k
     
-    try:
-        im = Image.open(os.path.join(MEDIA_ROOT, value))
-        version_path = get_version_path(value, version_prefix)
-        absolute_version_path = os.path.join(MEDIA_ROOT, version_path)
-        version_dir = os.path.split(absolute_version_path)[0]
-        if not os.path.isdir(version_dir):
-            os.makedirs(version_dir)
-            os.chmod(version_dir, 0775)
-        version = scale_and_crop(im, VERSIONS[version_prefix]['width'], VERSIONS[version_prefix]['height'], VERSIONS[version_prefix]['opts'])
+    file_path = os.path.join(PATH_SERVER, path, filename)
+    versions_path = os.path.join(PATH_SERVER, path, filename.replace(".", "_").lower() + IMAGE_GENERATOR_DIRECTORY)
+    if not os.path.isdir(versions_path):
+        os.mkdir(versions_path)
+        os.chmod(versions_path, 0775)
+    im = Image.open(file_path)
+    dimensions = im.size
+    current_width = dimensions[0]
+    current_height = dimensions[1]
+    msg = ""
+    if int(current_width) > int(current_height):
+        generator_to_use = IMAGE_GENERATOR_LANDSCAPE
+    else:
+        generator_to_use = IMAGE_GENERATOR_PORTRAIT
+    for prefix in generator_to_use: 
+        image_path = os.path.join(versions_path, prefix[0] + filename)
         try:
-            version.save(absolute_version_path, quality=90, optimize=(os.path.splitext(version_path)[1].lower() != '.gif'))
+            # DIMENSIONS
+            ratio = decimal.Decimal(0)
+            ratio = decimal.Decimal(current_width)/decimal.Decimal(current_height)
+            new_size_width = prefix[1]
+            new_size_height = int(new_size_width/ratio)
+            new_size = (new_size_width, new_size_height)
+            # ONLY MAKE NEW IMAGE VERSION OF ORIGINAL IMAGE IS BIGGER THAN THE NEW VERSION
+            # OTHERWISE FAIL SILENTLY
+            if int(current_width) > int(new_size_width):
+                # NEW IMAGE
+                new_image = im.resize(new_size, Image.ANTIALIAS)
+                new_image.save(image_path, quality=90, optimize=1)
+                # MAKE THUMBNAIL
+                _make_image_thumbnail(PATH_SERVER, os.path.join(path, filename.replace(".", "_").lower() + IMAGE_GENERATOR_DIRECTORY), prefix[0] + filename)
+            elif FORCE_GENERATOR_RUN:
+                im.save(image_path)
+                _make_image_thumbnail(PATH_SERVER, os.path.join(path, filename.replace(".", "_").lower() + IMAGE_GENERATOR_DIRECTORY), prefix[0] + filename)
         except IOError:
-            version.save(absolute_version_path, quality=90)
-        return version_path
-    except:
-        return None
-
-
-def scale_and_crop(im, width, height, opts):
-    """
-    Scale and Crop.
-    """
+            msg = "%s: %s" % (filename, _('Image creation failed.'))
+    return msg
     
+
+def scale_and_crop(im, requested_size, opts):
     x, y   = [float(v) for v in im.size]
-    if width:
-        xr = float(width)
-    else:
-        xr = float(x*height/y)
-    if height:
-        yr = float(height)
-    else:
-        yr = float(y*width/x)
+    xr, yr = [float(v) for v in requested_size]
     
     if 'crop' in opts:
         r = max(xr/x, yr/y)
@@ -330,41 +354,53 @@ def scale_and_crop(im, width, height, opts):
             im = im.crop((int(ex), int(ey), int(x-ex), int(y-ey)))
     return im
     
-    # if 'crop' in opts:
-    #     if 'top_left' in opts:
-    #         #draw cropping box from upper left corner of image
-    #         box = (0, 0, int(min(x, xr)), int(min(y, yr)))
-    #         im = im.resize((int(x), int(y)), resample=Image.ANTIALIAS).crop(box)
-    #     elif 'top_right' in opts:
-    #         #draw cropping box from upper right corner of image
-    #         box = (int(x-min(x, xr)), 0, int(x), int(min(y, yr)))
-    #         im = im.resize((int(x), int(y)), resample=Image.ANTIALIAS).crop(box)
-    #     elif 'bottom_left' in opts:
-    #         #draw cropping box from lower left corner of image
-    #         box = (0, int(y-min(y, yr)), int(xr), int(y))
-    #         im = im.resize((int(x), int(y)), resample=Image.ANTIALIAS).crop(box)
-    #     elif 'bottom_right' in opts:
-    #         #draw cropping box from lower right corner of image
-    #         (int(x-min(x, xr)), int(y-min(y, yr)), int(x), int(y))
-    #         im = im.resize((int(x), int(y)), resample=Image.ANTIALIAS).crop(box)
-    #     else:
-    #         ex, ey = (x-min(x, xr))/2, (y-min(y, yr))/2
-    #         if ex or ey:
-    #             box = (int(ex), int(ey), int(x-ex), int(y-ey))
-    #             im = im.resize((int(x), int(y)), resample=Image.ANTIALIAS).crop(box)
-    # return im
-    
-scale_and_crop.valid_options = ('crop', 'upscale')
 
-
-def convert_filename(value):
+def _image_crop_generator(PATH_SERVER, path, filename):
     """
-    Convert Filename.
+    Generate Cropped Versions for an Image.
     """
     
-    if CONVERT_FILENAME:
-        return value.replace(" ", "_").lower()
+    # PIL's Error "Suspension not allowed here" work around:
+    # s. http://mail.python.org/pipermail/image-sig/1999-August/000816.html
+    if STRICT_PIL:
+        from PIL import ImageFile
     else:
-        return value
+        try:
+            from PIL import ImageFile
+        except ImportError:
+            import ImageFile
+    ImageFile.MAXBLOCK = IMAGE_MAXBLOCK # default is 64k
+    
+    file_path = os.path.join(PATH_SERVER, path, filename)
+    versions_path = os.path.join(PATH_SERVER, path, filename.replace(".", "_").lower() + IMAGE_GENERATOR_DIRECTORY)
+    if not os.path.isdir(versions_path):
+        os.mkdir(versions_path)
+        os.chmod(versions_path, 0775)
+    im = Image.open(file_path)
+    msg = ""
+    for prefix in IMAGE_CROP_GENERATOR:
+        image_path = os.path.join(versions_path, prefix[0] + filename)
+        try:
+            cropped_image = scale_and_crop(im, (prefix[1], prefix[2]), ['crop'])
+            cropped_image.save(image_path, quality=90, optimize=1)
+            # MAKE THUMBNAIL
+            _make_image_thumbnail(PATH_SERVER, os.path.join(path, filename.replace(".", "_").lower() + IMAGE_GENERATOR_DIRECTORY), prefix[0] + filename)
+        except IOError:
+            msg = "%s: %s" % (filename, _('Image creation failed.'))
+    return msg
+    
 
+def _is_image_version(file):
+    image_version = False
+    for item in IMAGE_GENERATOR_LANDSCAPE:
+        if file.startswith(item[0]):
+            image_version = True
+    for item in IMAGE_GENERATOR_PORTRAIT:
+        if file.startswith(item[0]):
+            image_version = True
+    for item in IMAGE_CROP_GENERATOR:
+        if file.startswith(item[0]):
+            image_version = True
+    return image_version
+    
 

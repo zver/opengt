@@ -18,24 +18,12 @@ var FileBrowser = {
         }
     },
     // show FileBrowser
-    show: function(id, href, close_func) {
+    show: function(id, href) {
         // var id2=String(id).split(".").join("___");
         var id2=String(id).replace(/\-/g,"____").split(".").join("___");
-        FBWindow = window.open(href, String(id2), 'height=600,width=960,resizable=yes,scrollbars=yes');
+        FBWindow = window.open(href, String(id2), 'height=600,width=840,resizable=yes,scrollbars=yes');
         FBWindow.focus();
-        if (close_func) {
-            FBWindow.onbeforeunload = close_func;
-        }
     }
-}
-
-function addEvent( obj, type, fn ) {
-    if ( obj.attachEvent ) {
-        obj['e'+type+fn] = fn;
-        obj[type+fn] = function(){obj['e'+type+fn]( window.event );}
-        obj.attachEvent( 'on'+type, obj[type+fn] );
-    } else
-        obj.addEventListener( type, fn, false );
 }
 
 addEvent(window, 'load', FileBrowser.init);
