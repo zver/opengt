@@ -1,6 +1,5 @@
 Source tree:
 django_opengt			- Django project
-		agp/		- Sample app for use opengt
 		tracker/	- Tracker app
 
 opengtd/			- python daemon for listen tcp ports and receive data from trackers

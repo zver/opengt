@@ -35,12 +35,6 @@ Group: Monitoring
 %description -n opengtd
 Opengt daemon
 
-%package -n osolutions-webapps-agp
-Summary: AGP web site with opengt system
-Group: Development/Python
-%description -n osolutions-webapps-agp
-AGP web site with opengt system
-
 %prep
 %setup
 
@@ -52,12 +46,6 @@ AGP web site with opengt system
 
 # opengtd
 install -pD -m 644 opengtd/opengtd.conf %buildroot%_sysconfdir/opengtd.conf
-
-# Install sample agp web app
-%define AGP_INSTALL_DIR /var/www/webapps/opengt_agp
-%add_python_lib_path %AGP_INSTALL_DIR
-mkdir -p %buildroot%AGP_INSTALL_DIR
-cp -r opengt_agp/* %buildroot%AGP_INSTALL_DIR
 
 %files
 
@@ -71,9 +59,6 @@ cp -r opengt_agp/* %buildroot%AGP_INSTALL_DIR
 %files -n opengtd
 %_bindir/opengtd
 %_sysconfdir/opengtd.conf
-
-%files -n osolutions-webapps-agp
-%AGP_INSTALL_DIR
 
 
 %changelog
