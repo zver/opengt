@@ -12,7 +12,8 @@ __license__ = "GPLv3"
 from distutils.core import setup
 from glob import glob
 
-longdesc = '''XMPP message sender from CLI'''
+longdesc = '''Open geo tracker django modules and daemon for receive,
+parse and save data from trackers.'''
 
 setup(
 	name = "opengt",
