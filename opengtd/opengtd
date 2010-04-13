@@ -3,72 +3,96 @@
 # result over Django models.
 
 import sys
+from getopt import gnu_getopt
+usage = 'Usage: %s [-f path_to_config] start|stop|restart' % sys.argv[0]
+if len(sys.argv) == 1: print usage; exit(0)
 # Get config
-config_filename = '/etc/opengtd.conf'
+(opts,rest) = gnu_getopt(sys.argv[1:],'hf:')
+sys.argv[1:0] = rest
+opts = dict(opts)
+if '-h' in opts: print usage; exit(0)
+if '-f' in opts: config_filename = opts['-f']
+else: config_filename = '/etc/opengtd.conf'
 from configobj import ConfigObj
 config = ConfigObj(config_filename)
 if not config:
-	print "Can't read config from %s file" % config_filename
+	print "Can't read config from '%s' file" % config_filename
 	sys.exit(1)
 
-# Set logger
-import logging
-LEVELS = {
-			'debug': logging.DEBUG,
-			'info': logging.INFO,
-			'warning': logging.WARNING,
-			'error': logging.ERROR,
-			'critical': logging.CRITICAL
-}
-level = LEVELS.get(config['log_level'], logging.NOTSET)
-format = '%(asctime)s %(levelname)s %(name)s:%(lineno)d %(message)s'
-logging.basicConfig(format=format, level=level, filename=config['log_filename'])
-logger = logging.getLogger(__name__)
+from daemon.runner import DaemonRunner
 
-logger.info("Starting opengtd...")
+class DaemonApp:
+   def __init__(self,pidfile_path,run):
+      self.__dict__ = {
+         'stdin_path':        '/dev/null',
+         'stdout_path':       '/dev/null',
+         'stderr_path':       '/dev/null',
+         'pidfile_path':      pidfile_path,
+         'run':               run,
+         'pidfile_timeout':   600,
+      }
+
+def main():
+   # Set logger
+   import logging
+   LEVELS = {
+            'debug': logging.DEBUG,
+            'info': logging.INFO,
+            'warning': logging.WARNING,
+            'error': logging.ERROR,
+            'critical': logging.CRITICAL
+   }
+   level = LEVELS.get(config['log_level'], logging.NOTSET)
+   format = '%(asctime)s %(levelname)s %(name)s:%(lineno)d %(message)s'
+   logging.basicConfig(format=format, level=level, filename=config['log_filename'])
+   logger = logging.getLogger(__name__)
+
+   logger.info("Starting opengtd...")
+
+   # Set path
+   import os
+   django_opengt_path = config['django_opengt_path']
+   sys.path.insert(0, '..')
+   sys.path.insert(1, django_opengt_path)
+   os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+
+   import SocketServer
+   from opengt.protocols import GlobalsatReport
+
+   import re
+
+   from opengt import protocols
+
+   # Run tcp socket servers for each protocol
+   report_callback = config.get('callback', None)
+   for protocol_name in config['protocols']:
+
+      if not re.compile(r'').match(protocol_name):
+         logger.error('protocol name %s isn\'t valid' % protocol_name)
+         continue
+      port = config['protocols'][protocol_name]['port']
+      iface = config['protocols'][protocol_name].get('iface', '')
 
 
-# Set path
-import os
-django_opengt_path = config['django_opengt_path']
-sys.path.insert(0, '..')
-sys.path.insert(1, django_opengt_path)
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+      try:
+         port = int(port)
+      except ValueError, e:
+         logger.error('Invlid port number %s for %s protocol' % (port, protocol_name))
+         continue
+      protocol_handler_name = '%s%sRequestHandler' % (protocol_name[0].upper(), protocol_name[1:].lower())
 
-import SocketServer
-from opengt.protocols import GlobalsatReport
+      try:
+         handler = getattr(protocols, protocol_handler_name)
+      except AttributeError, e:
+         logger.error(str(e))
+         continue
+      setattr(handler, 'report_callback', report_callback)
 
-import re
+      logger.info("Start listening for %s protocol on %s:%s" % (protocol_name, iface if iface else '0.0.0.0', port))
 
-from opengt import protocols
+      server = SocketServer.ThreadingTCPServer((iface, port), handler)
+      server.serve_forever()
 
-# Run tcp socket servers for each protocol
-report_callback = config.get('callback', None)
-for protocol_name in config['protocols']:
-
-	if not re.compile(r'').match(protocol_name):
-		logger.error('protocol name %s isn\'t valid' % protocol_name)
-		continue
-	port = config['protocols'][protocol_name]['port']
-	iface = config['protocols'][protocol_name].get('iface', '')
-
-
-	try:
-		port = int(port)
-	except ValueError, e:
-		logger.error('Invlid port number %s for %s protocol' % (port, protocol_name))
-		continue
-	protocol_handler_name = '%s%sRequestHandler' % (protocol_name[0].upper(), protocol_name[1:].lower())
-
-	try:
-		handler = getattr(protocols, protocol_handler_name)
-	except AttributeError, e:
-		logger.error(str(e))
-		continue
-	setattr(handler, 'report_callback', report_callback)
-
-	logger.info("Start listening for %s protocol on %s:%s" % (protocol_name, iface if iface else '0.0.0.0', port))
-
-	server = SocketServer.ThreadingTCPServer((iface, port), handler)
-	server.serve_forever()
-
+app = DaemonApp(config['pid_filename'],main)
+dr = DaemonRunner(app)
+dr.do_action()
