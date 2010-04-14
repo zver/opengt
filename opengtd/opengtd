@@ -20,6 +20,9 @@ if not config:
 	sys.exit(1)
 
 from daemon.runner import DaemonRunner
+import signal, time
+import threading
+servers = [] # list of TCPServer instances running in their own threads
 
 class DaemonApp:
    def __init__(self,pidfile_path,run):
@@ -31,6 +34,11 @@ class DaemonApp:
          'run':               run,
          'pidfile_timeout':   600,
       }
+
+def sigint_handler(signo, frame):
+   for server in servers:
+      server.shutdown();
+   sys.exit(0)
 
 def main():
    # Set logger
@@ -62,9 +70,10 @@ def main():
    import re
 
    from opengt import protocols
-
    # Run tcp socket servers for each protocol
    report_callback = config.get('callback', None)
+   lock = threading.Lock()
+   logger.debug('Creating ThreadedTCPServer`s instances')
    for protocol_name in config['protocols']:
 
       if not re.compile(r'').match(protocol_name):
@@ -87,11 +96,20 @@ def main():
          logger.error(str(e))
          continue
       setattr(handler, 'report_callback', report_callback)
+      setattr(handler, 'lock', lock)
 
       logger.info("Start listening for %s protocol on %s:%s" % (protocol_name, iface if iface else '0.0.0.0', port))
 
       server = SocketServer.ThreadingTCPServer((iface, port), handler)
-      server.serve_forever()
+      servers.append(server)
+      thread = threading.Thread(target=server.serve_forever())
+      thread.setName('for "%s" protocol' % (protocol_name,))
+      thread.start();
+
+   
+   signal.signal(signal.SIGINT,sigint_handler)
+   while 1:
+      time.sleep(10)
 
 app = DaemonApp(config['pid_filename'],main)
 dr = DaemonRunner(app)

@@ -37,6 +37,8 @@ class GlobalsatReport(BaseReport):
 
 from base import BaseRequestHandler
 class GlobalsatRequestHandler(BaseRequestHandler):
+	lock = None
+
 	def handle(self):
 		while 1:
 			data = self.request.recv(1024)
@@ -49,5 +51,7 @@ class GlobalsatRequestHandler(BaseRequestHandler):
 			if not data: break
 			gr = GlobalsatReport(str(data), callback=self.report_callback)
 			if gr.is_valid:
-				gr.save()
+				if self.lock:
+					with self.lock: gr.save()
+				else: gr.save()
 
