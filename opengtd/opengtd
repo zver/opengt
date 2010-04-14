@@ -25,7 +25,7 @@ import threading
 servers = [] # list of TCPServer instances running in their own threads
 
 class DaemonApp:
-   def __init__(self,pidfile_path,run):
+   def __init__(self, pidfile_path, run):
       self.__dict__ = {
          'stdin_path':        '/dev/null',
          'stdout_path':       '/dev/null',
@@ -37,7 +37,7 @@ class DaemonApp:
 
 def sigint_handler(signo, frame):
    for server in servers:
-      server.shutdown();
+      server.shutdown()
    sys.exit(0)
 
 def main():
@@ -102,15 +102,15 @@ def main():
 
       server = SocketServer.ThreadingTCPServer((iface, port), handler)
       servers.append(server)
-      thread = threading.Thread(target=server.serve_forever())
+      thread = threading.Thread(target=server.serve_forever)
       thread.setName('for "%s" protocol' % (protocol_name,))
-      thread.start();
+      thread.start()
 
    
-   signal.signal(signal.SIGINT,sigint_handler)
+   signal.signal(signal.SIGINT, sigint_handler)
    while 1:
       time.sleep(10)
 
-app = DaemonApp(config['pid_filename'],main)
-dr = DaemonRunner(app)
+app = DaemonApp(config['pid_filename'], main)
+dr  = DaemonRunner(app)
 dr.do_action()
